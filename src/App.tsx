@@ -18,12 +18,12 @@ const SITE_CONFIG = {
     handle: "@atvcomana",
   },
   contact: {
-    phoneDisplay: "0731 441 122",
-    phoneRaw: "0731441122",
-    whatsapp: "40731441122",
+    phoneDisplay: "0774 528 684",
+    phoneRaw: "0774528684",
+    whatsapp: "40774528684",
   },
   social: {
-    tiktok: "https://tiktok.com/@atvcomana",       // Link TikTok
+    tiktok: "https://www.tiktok.com/@atv.comana?is_from_webapp=1&sender_device=pc",       // Link TikTok
     instagram: "https://instagram.com/atvcomana",  // Link Instagram
   },
   location: {
@@ -52,34 +52,24 @@ interface ATVModel {
 
 const FLEET_DATA: ATVModel[] = [
   {
-    id: "cfmoto-520",
-    name: "CFMOTO CForce 520L",
+    id: "cfmoto-450s",
+    name: "CFMOTO 450 S",
     badge: "Cel Mai Popular",
-    engine: "495 cc (2026 Model)",
+    engine: "400 cc (2023 Model)",
     power: "38 HP - 4x4 Selectabil",
     type: "2 Locuri cu Spătar Premium",
     pricePerHour: 150,
     specs: ["Troliu electric 1200kg", "Servodirecţie electronică (EPS)", "Suspensii independente dublu braţ", "Anvelope off-road de înaltă tracţiune"]
   },
   {
-    id: "cfmoto-625",
-    name: "CFMOTO CForce 625 Touring",
+    id: "cfmoto-c5",
+    name: "CFMOTO C5",
     badge: "Forţă Brută",
-    engine: "580 cc (Cilindru Mare)",
+    engine: "495 cc (2026 Model)",
     power: "45 HP - Cuplu Maxim",
     type: "2 Locuri cu Protecţie Maximă",
     pricePerHour: 200,
     specs: ["Sistem EPS inteligent", "Jante aliaj premium 12\"", "Faruri LED Ultra-Bright", "Cutie automată CVT cu frână de motor"]
-  },
-  {
-    id: "cfmoto-1000",
-    name: "CFMOTO CForce 1000 Overland",
-    badge: "Monstru Off-Road",
-    engine: "963 cc V-Twin",
-    power: "85 HP - Adrenalină Pură",
-    type: "2 Locuri - Ediţie Limitată",
-    pricePerHour: 300,
-    specs: ["Bumper faţă/spate din oţel", "Scuturi protecţie aluminiu integrate", "Valize de călătorie impermeabile", "Amortizoare pe gaz complet reglabile"]
   }
 ];
 
@@ -353,7 +343,7 @@ function MainPage() {
   const { MotionDiv, MotionAnimatePresence } = useMotionTools();
 
   // UI states
-  const [selectedAtv, setSelectedAtv] = useState<string>("cfmoto-520");
+  const [selectedAtv, setSelectedAtv] = useState<string>("cfmoto-450s");
   const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
 
   // Scroll visibility state for Navbar
