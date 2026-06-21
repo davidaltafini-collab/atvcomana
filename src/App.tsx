@@ -321,7 +321,9 @@ function DebugPage() {
 }
 
 export default function App() {
-  const isDebugPage = typeof window !== "undefined" && window.location.pathname === "/debug";
+  const isDebugPage =
+    typeof window !== "undefined" &&
+    (window.location.pathname === "/debug" || window.location.search.includes("debug=1"));
   return isDebugPage ? <DebugPage /> : <MainPage />;
 }
 
