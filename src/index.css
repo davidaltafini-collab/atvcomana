@@ -99,7 +99,7 @@ html {
   border-radius: 2px;
 }
 
-/* Apple-style Interactive Sliders */
+/* Apple-style Interactive Sliders - FIX */
 .apple-slider {
   -webkit-appearance: none;
   appearance: none;
@@ -108,13 +108,8 @@ html {
   background: #27272a;
   border-radius: 9999px;
   outline: none;
-  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
   margin: 8px 0;
-}
-
-/* Bara devine mai groasă la atingere */
-.apple-slider:active {
-  height: 14px;
+  touch-action: none;
 }
 
 .apple-slider::-webkit-slider-thumb {
@@ -126,11 +121,12 @@ html {
   background: #D4FF00;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Butonul se mărește la atingere */
-.apple-slider:active::-webkit-slider-thumb {
+/* DOAR bila se mărește */
+.apple-slider:active::-webkit-slider-thumb,
+.apple-slider::-webkit-slider-thumb:hover {
   transform: scale(1.3);
 }
 
@@ -142,9 +138,10 @@ html {
   background: #D4FF00;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.apple-slider:active::-moz-range-thumb {
+.apple-slider:active::-moz-range-thumb,
+.apple-slider::-moz-range-thumb:hover {
   transform: scale(1.3);
 }

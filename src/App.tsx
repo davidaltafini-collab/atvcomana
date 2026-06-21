@@ -709,7 +709,7 @@ function MainPage() {
                 className="relative w-full aspect-[16/10] sm:aspect-video rounded-xl overflow-hidden border border-zinc-900 block group"
               >
                 {/* Pinul Personalizat Verde - stă PERFECT în mijlocul containerului */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 drop-shadow-[0_0_15px_rgba(212,255,0,0.8)] pointer-events-none">
+                <div className="absolute top-[47.5%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 drop-shadow-[0_0_15px_rgba(212,255,0,0.8)] pointer-events-none">
                   <MapPin className="w-10 h-10 text-[#D4FF00] fill-black/50" />
                 </div>
 
