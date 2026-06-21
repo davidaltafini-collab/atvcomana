@@ -322,49 +322,41 @@ export default function App() {
 
             </div>
 
-            {/* SOCIAL NAVIGATION (Massive, scattered 'in your face' layout, stacked in natural flow) */}
-            <div className="w-full flex flex-col items-center justify-center gap-8 py-10 overflow-visible border-b border-zinc-900/50">
+           {/* SOCIAL NAVIGATION (iOS Style Apps Layout) */}
+            <div className="w-full flex flex-row flex-wrap items-start justify-center gap-x-6 gap-y-6 py-8 mt-4 overflow-visible relative z-20 px-4 [-webkit-tap-highlight-color:transparent] border-b border-zinc-900/50">
               
               {/* TikTok */}
-              <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="group w-24 h-24 flex justify-center items-center active:scale-95 transition-all outline-none -ml-28 -rotate-12">
-                <div className="absolute inset-0 bg-[#FE2C55] blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>
-                <svg className="w-16 h-16 text-white relative z-10 drop-shadow-[4px_4px_0px_#25F4EE] group-hover:drop-shadow-[6px_6px_0px_#FE2C55] transition-all" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12.525.02c1.31-.02 2.61-.01 3.91.04.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.18-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-.99-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
-                </svg>
+              <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer">
+                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] group-active:scale-95 bg-black relative">
+                  <img src="/tiktok.png" alt="TikTok" className="w-full h-full object-cover outline-none border-none" />
+                </div>
+                <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">TikTok</span>
               </a>
 
               {/* Instagram */}
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="relative group w-24 h-24 flex justify-center items-center active:scale-95 transition-all outline-none ml-28 rotate-12">
-                <div className="absolute inset-0 bg-[#E1306C] blur-3xl opacity-60 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>
-                <svg className="w-20 h-20 text-white relative z-10 drop-shadow-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
-                </svg>
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer">
+                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] group-active:scale-95 bg-black relative">
+                  <img src="/instagram.png" alt="Instagram" className="w-full h-full object-cover outline-none border-none" />
+                </div>
+                <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">Instagram</span>
               </a>
 
               {/* WhatsApp */}
-              <a href="https://wa.me/40731441122?text=Salut!%20Vreau%20s%C4%83%20fac%20o%20rezervare%20la%20ATV%20Comana." target="_blank" rel="noreferrer" className="relative group w-24 h-24 flex justify-center items-center active:scale-95 transition-all outline-none -ml-20 -rotate-6 mt-4">
-                <div className="absolute inset-0 bg-[#25D366] blur-3xl opacity-60 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>
-                <svg className="w-20 h-20 text-white relative z-10 drop-shadow-xl" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.489-1.761-1.663-2.06-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z" />
-                </svg>
+              <a href="https://wa.me/40731441122" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer">
+                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] group-active:scale-95 bg-black relative">
+                  <img src="/whatsap.png" alt="WhatsApp" className="w-full h-full object-cover outline-none border-none" />
+                </div>
+                <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">WhatsApp</span>
               </a>
 
-              {/* Waze (Proper accurate Waze ghost SVG) */}
-              <a href="https://waze.com/ul?ll=44.170668,26.136867&navigate=yes" target="_blank" rel="noreferrer" className="relative group w-24 h-24 flex justify-center items-center active:scale-95 transition-all outline-none ml-24 rotate-6 mt-4">
-                <div className="absolute inset-0 bg-[#33CCFF] blur-3xl opacity-60 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>
-                <div className="w-[85px] h-[85px] relative z-10 bg-[#33CCFF] rounded-[22px] drop-shadow-xl flex items-center justify-center border-b-2 border-r-2 border-black/10">
-                  <svg className="w-16 h-16 mt-1.5" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M100 30C66.8 30 40 60 40 100C40 120.6 48.2 138.4 60.8 149.9C59 157 52 159.8 51.8 159.9C49.2 160.7 48 163.5 49.1 165.9C50 167.6 51.8 168.8 53.8 168.8C54.3 168.8 54.8 168.8 55.3 168.6C67.1 165.7 76.8 159 84.9 150C89.3 151.4 94.5 152.8 100 152.8C134.2 152.8 160 123 160 100C160 60 134.2 30 100 30Z" fill="white" stroke="black" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="115" cy="85" r="8" fill="black"/>
-                    <circle cx="75" cy="85" r="8" fill="black"/>
-                    <path d="M75 105C75 105 85 120 115 105" stroke="black" strokeWidth="10" strokeLinecap="round"/>
-                    <circle cx="70" cy="145" r="16" fill="black" stroke="black" strokeWidth="2"/>
-                    <circle cx="125" cy="145" r="16" fill="black" stroke="black" strokeWidth="2"/>
-                  </svg>
+              {/* Waze */}
+              <a href="https://waze.com/ul?ll=44.170668,26.136867&navigate=yes" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer">
+                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] group-active:scale-95 bg-black relative">
+                  <img src="/waze.png" alt="Waze" className="w-full h-full object-cover outline-none border-none" />
                 </div>
+                <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">Waze</span>
               </a>
+
             </div>
 
             {/* INTERACTIVE FLEET SELECTION SLIDER */}
