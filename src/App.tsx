@@ -141,7 +141,7 @@ export default function App() {
   const [reservationDuration, setReservationDuration] = useState<number>(2); // hours
   const [reservationDate, setReservationDate] = useState<string>("");
   const [reservationTime, setReservationTime] = useState<string>("12:00");
-  const [reservationPhone, setReservationPhone] = useState<string>("");
+  const [reservationName, setReservationName] = useState<string>("");
 
   const currentAtvObj = FLEET_DATA.find(a => a.id === selectedAtv) || FLEET_DATA[0];
   const totalPrice = reservationAtvsCount * reservationDuration * currentAtvObj.pricePerHour;
@@ -179,7 +179,7 @@ export default function App() {
     - Durată traseu: ${reservationDuration} ore
     - Dată dorită: ${formattedDate}
     - Ora estimată: ${reservationTime}
-    ${reservationPhone ? `- Telefon contact: ${reservationPhone}` : ''}
+    ${reservationName ? `- Nume client: ${reservationName}` : ''}
     - Cost estimat: ${totalPrice} RON
     Aştept confirmarea disponibilităţii dumneavoastră. Mulţumesc!`;
     
@@ -434,9 +434,9 @@ export default function App() {
                   </span>
                 </div>
 
-                {/* Harta e acum un Buton Waze (blochează eroarea de 2 fingers) */}
+                {/* Harta e acum un Buton Google Maps (Cu UI-ul alb ascuns in afara containerului) */}
                 <a 
-                  href="https://waze.com/ul?ll=44.170668,26.136867&navigate=yes" 
+                  href="https://www.google.com/maps/place/Comana+Adventure+Park/@44.170668,26.136867,15z" 
                   target="_blank" 
                   rel="noreferrer" 
                   className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-zinc-900 block group"
@@ -444,19 +444,18 @@ export default function App() {
                   <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 group-hover:bg-transparent transition-colors">
                     {/* Badge elegant care indică acțiunea */}
                     <div className="bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg text-[10px] text-white font-mono tracking-widest uppercase border border-white/10 shadow-lg opacity-90 group-hover:opacity-0 transition-opacity">
-                      Apasă pentru Navigație
+                      Deschide în Google Maps
                     </div>
                   </div>
+                  {/* Iframe-ul este mărit la 150% pentru a ascunde butoanele și textele implicite Google */}
                   <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11531.621430032544!2d26.1368673!3d44.170668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1ea0da97611ab%3A0xe5a36ebd77d07996!2sComana%20Adventure%20Park!5e0!3m2!1sen!2sro!4v1700000000000!5m2!1sen!2sro" 
-                    width="100%" 
-                    height="100%" 
                     style={{ border: 0 }} 
                     allowFullScreen={true} 
                     loading="lazy" 
                     referrerPolicy="no-referrer"
                     title="Harta Inchiriere ATV Comana"
-                    className="grayscale contrast-[1.3] brightness-[0.7] transition-all duration-300 pointer-events-none"
+                    className="absolute top-1/2 left-1/2 w-[150%] h-[150%] -translate-x-1/2 -translate-y-1/2 grayscale contrast-[1.3] brightness-[0.7] transition-all duration-300 pointer-events-none"
                   ></iframe>
                 </a>
 
@@ -468,11 +467,9 @@ export default function App() {
                     rel="noreferrer"
                     className="text-[#D4FF00] uppercase font-bold text-[10px] hover:underline flex items-center gap-1"
                   >
-                    Deschide Navigaţia <Navigation className="w-3 h-3" />
+                    Navigație Waze <Navigation className="w-3 h-3" />
                   </a>
                 </div>
-              </div>
-            </div>
 
             {/* RECURRING EXCURSIONS / TRAILS */}
             <div className="px-6 py-4 flex flex-col gap-4">
@@ -578,7 +575,7 @@ export default function App() {
                           type="date" 
                           value={reservationDate}
                           onChange={(e) => setReservationDate(e.target.value)}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-[#D4FF00] font-space"
+                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark]"
                         />
                       </div>
                     </div>
@@ -588,7 +585,7 @@ export default function App() {
                       <select 
                         value={reservationTime}
                         onChange={(e) => setReservationTime(e.target.value)}
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer"
+                        className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer"
                       >
                         <option value="09:00">09:00 (Răsărit)</option>
                         <option value="11:00">11:00 (Dimineaţă)</option>
@@ -601,12 +598,12 @@ export default function App() {
                   </div>
 
                   <div>
-                    <label className="text-[10px] uppercase font-mono text-zinc-400 block mb-1">Numărul Tău de Contact (Opțional)</label>
+                    <label className="text-[10px] uppercase font-mono text-zinc-400 block mb-1">Numele Tău (Opțional)</label>
                     <input 
-                      type="tel" 
-                      placeholder="Ex: 0722 123 456"
-                      value={reservationPhone}
-                      onChange={(e) => setReservationPhone(e.target.value)}
+                      type="text" 
+                      placeholder="Ex: Andrei Popescu"
+                      value={reservationName}
+                      onChange={(e) => setReservationName(e.target.value)}
                       className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-[#D4FF00] font-mono"
                     />
                   </div>
@@ -707,7 +704,7 @@ export default function App() {
           <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-full max-w-[340px] px-4 flex justify-center z-50 pointer-events-auto">
             <a 
               href="tel:0774528684"
-              className="w-full bg-[#D4FF00] py-4 rounded-2xl flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(212,255,0,0.5)] active:scale-95 transition-transform animate-pulse-glow text-black font-black uppercase text-sm tracking-tighter"
+              className="w-full bg-[#D4FF00] py-4 rounded-full flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(212,255,0,0.5)] active:scale-95 transition-transform animate-pulse-glow text-black font-black uppercase text-sm tracking-tighter"
               id="sticky-call-btn"
             >
               <Phone className="w-5 h-5 fill-black" stroke="black" strokeWidth="1" />
