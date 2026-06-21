@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   MapPin, 
   Phone, 
@@ -140,14 +139,204 @@ const FAQS: FAQItem[] = [
   }
 ];
 
+type MotionTools = {
+  MotionDiv: React.ComponentType<Record<string, unknown>>;
+  MotionAnimatePresence: React.ComponentType<{ children: React.ReactNode; initial?: boolean }>;
+};
+
+const PlainMotionDiv = ({ children, ...props }: Record<string, unknown> & { children?: React.ReactNode }) => {
+  const {
+    drag,
+    dragConstraints,
+    dragElastic,
+    whileTap,
+    initial,
+    animate,
+    exit,
+    transition,
+    ...domProps
+  } = props;
+
+  void drag;
+  void dragConstraints;
+  void dragElastic;
+  void whileTap;
+  void initial;
+  void animate;
+  void exit;
+  void transition;
+
+  return <div {...domProps}>{children}</div>;
+};
+
+const PlainAnimatePresence = ({ children }: { children: React.ReactNode }) => <>{children}</>;
+
+function useMotionTools(): MotionTools {
+  const [tools, setTools] = useState<MotionTools>({
+    MotionDiv: PlainMotionDiv,
+    MotionAnimatePresence: PlainAnimatePresence,
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+    let idleId: number | null = null;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const loadMotion = () => {
+      import("framer-motion").then(({ motion, AnimatePresence }) => {
+        if (!isMounted) return;
+        setTools({
+          MotionDiv: motion.div as React.ComponentType<Record<string, unknown>>,
+          MotionAnimatePresence: AnimatePresence as React.ComponentType<{ children: React.ReactNode; initial?: boolean }>,
+        });
+      });
+    };
+
+    if ("requestIdleCallback" in window) {
+      idleId = (window as Window & { requestIdleCallback: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number })
+        .requestIdleCallback(loadMotion, { timeout: 1200 });
+    } else {
+      timeoutId = globalThis.setTimeout(loadMotion, 800);
+    }
+
+    return () => {
+      isMounted = false;
+      if (idleId !== null && "cancelIdleCallback" in window) {
+        (window as Window & { cancelIdleCallback: (handle: number) => void }).cancelIdleCallback(idleId);
+      }
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, []);
+
+  return tools;
+}
+
+function DebugPage() {
+  const [snapshot, setSnapshot] = useState<Record<string, unknown> | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    const addError = (message: string) => {
+      setErrors((current) => [...current, `${new Date().toLocaleTimeString("ro-RO")} - ${message}`]);
+    };
+
+    const collect = () => {
+      const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+      const paints = performance.getEntriesByType("paint").map((entry) => ({
+        name: entry.name,
+        startMs: Math.round(entry.startTime),
+      }));
+      const resources = performance
+        .getEntriesByType("resource")
+        .map((entry) => {
+          const resource = entry as PerformanceResourceTiming;
+          return {
+            name: resource.name.replace(window.location.origin, ""),
+            type: resource.initiatorType,
+            startMs: Math.round(resource.startTime),
+            durationMs: Math.round(resource.duration),
+            transferBytes: resource.transferSize,
+          };
+        })
+        .sort((a, b) => b.durationMs - a.durationMs)
+        .slice(0, 20);
+
+      setSnapshot({
+        collectedAt: new Date().toLocaleString("ro-RO"),
+        readyState: document.readyState,
+        rootChildren: document.getElementById("root")?.children.length ?? 0,
+        userAgent: navigator.userAgent,
+        viewport: `${window.innerWidth}x${window.innerHeight}`,
+        connection: "connection" in navigator ? (navigator as Navigator & { connection?: unknown }).connection : "indisponibil",
+        navigation: navigation
+          ? {
+              domInteractiveMs: Math.round(navigation.domInteractive),
+              domContentLoadedMs: Math.round(navigation.domContentLoadedEventEnd),
+              loadMs: Math.round(navigation.loadEventEnd),
+              transferBytes: navigation.transferSize,
+            }
+          : null,
+        paints,
+        slowResources: resources,
+      });
+    };
+
+    const onError = (event: ErrorEvent) => addError(event.message);
+    const onRejection = (event: PromiseRejectionEvent) => addError(String(event.reason));
+
+    collect();
+    const timers = [window.setTimeout(collect, 1500), window.setTimeout(collect, 5000)];
+    window.addEventListener("load", collect);
+    window.addEventListener("error", onError);
+    window.addEventListener("unhandledrejection", onRejection);
+
+    return () => {
+      timers.forEach(window.clearTimeout);
+      window.removeEventListener("load", collect);
+      window.removeEventListener("error", onError);
+      window.removeEventListener("unhandledrejection", onRejection);
+    };
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#020202] text-white font-mono p-5 sm:p-6">
+      <div className="max-w-4xl mx-auto space-y-5">
+        <div className="flex flex-col gap-2 border-b border-zinc-900 pb-4">
+          <div className="text-[#D4FF00] text-xs uppercase tracking-widest">ATV Comana Debug</div>
+          <h1 className="text-xl sm:text-2xl font-black font-display uppercase">Diagnostic incarcare mobil</h1>
+          <p className="text-xs sm:text-sm text-zinc-400 font-sans">
+            Deschide aceasta pagina de pe telefon si trimite captura. Arata erorile JS, timpii de randare si resursele lente.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-[#D4FF00] text-black rounded-lg px-4 py-2 text-xs font-bold uppercase"
+          >
+            Reincarca testul
+          </button>
+          <a href="/" className="bg-zinc-900 text-white rounded-lg px-4 py-2 text-xs font-bold uppercase">
+            Inapoi la site
+          </a>
+        </div>
+
+        {errors.length > 0 && (
+          <div className="bg-red-500/10 border border-red-500/40 rounded-xl p-4">
+            <div className="text-red-400 text-xs uppercase font-bold mb-2">Erori detectate</div>
+            <pre className="text-[11px] whitespace-pre-wrap text-red-100">{errors.join("\n")}</pre>
+          </div>
+        )}
+
+        <div className="bg-zinc-950 border border-zinc-900 rounded-xl p-4 overflow-x-auto">
+          <pre className="text-[11px] sm:text-xs leading-relaxed text-zinc-200 whitespace-pre-wrap">
+            {snapshot ? JSON.stringify(snapshot, null, 2) : "Colectez date..."}
+          </pre>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
+  const isDebugPage =
+    typeof window !== "undefined" &&
+    (window.location.pathname === "/debug" || window.location.search.includes("debug=1"));
+  return isDebugPage ? <DebugPage /> : <MainPage />;
+}
+
+function MainPage() {
+  const { MotionDiv, MotionAnimatePresence } = useMotionTools();
+
   // UI states
   const [selectedAtv, setSelectedAtv] = useState<string>("cfmoto-520");
   const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
   
   // Scroll visibility state for Navbar 
   const [isNavbarVisible, setIsNavbarVisible] = useState<boolean>(true);
-  const [lastScrollY, setLastScrollY] = useState<number>(0);
+  const lastScrollYRef = useRef<number>(0);
   
   // Interactive Reservation states
   const [reservationAtvsCount, setReservationAtvsCount] = useState<number>(2);
@@ -170,19 +359,27 @@ export default function App() {
 
   // Smart Scroll Handler (Apare la scroll up, dispare la scroll down)
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 80) {
-        setIsNavbarVisible(false); // Scroll în JOS -> Ascunde
-      } else {
-        setIsNavbarVisible(true);  // Scroll în SUS -> Arată
-      }
-      setLastScrollY(currentScrollY);
+      if (ticking) return;
+
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        if (currentScrollY > lastScrollYRef.current && currentScrollY > 80) {
+          setIsNavbarVisible(false); // Scroll în JOS -> Ascunde
+        } else {
+          setIsNavbarVisible(true);  // Scroll în SUS -> Arată
+        }
+        lastScrollYRef.current = currentScrollY;
+        ticking = false;
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   const handleFAQToggle = (index: number) => {
     setActiveFAQ(activeFAQ === index ? null : index);
@@ -357,41 +554,41 @@ export default function App() {
         {/* Containerul cu iconițele aruncate & trăgabile */}
         <div className="flex flex-row flex-wrap items-center justify-center gap-6 sm:gap-10 overflow-visible w-full max-w-4xl">
         
-          <motion.div drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
+          <MotionDiv drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
             <a href={SITE_CONFIG.social.tiktok} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none -rotate-6 mt-3 group">
               <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5 pointer-events-none">
                 <img src="/tiktok.png" alt="TikTok" className="w-full h-full object-cover outline-none border-none" />
               </div>
               <span className="text-xs sm:text-sm font-sans font-medium text-zinc-400 transition-colors pointer-events-none">TikTok</span>
             </a>
-          </motion.div>
+          </MotionDiv>
 
-          <motion.div drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
+          <MotionDiv drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
             <a href={SITE_CONFIG.social.instagram} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none rotate-3 -mt-3 group">
               <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5 pointer-events-none">
                 <img src="/instagram.png" alt="Instagram" className="w-full h-full object-cover outline-none border-none" />
               </div>
               <span className="text-xs sm:text-sm font-sans font-medium text-zinc-400 transition-colors pointer-events-none">Instagram</span>
             </a>
-          </motion.div>
+          </MotionDiv>
 
-          <motion.div drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
+          <MotionDiv drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
             <a href={`https://wa.me/${SITE_CONFIG.contact.whatsapp}`} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none -rotate-3 mt-4 group">
               <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5 pointer-events-none">
                 <img src="/whatsap.png" alt="WhatsApp" className="w-full h-full object-cover outline-none border-none" />
               </div>
               <span className="text-xs sm:text-sm font-sans font-medium text-zinc-400 transition-colors pointer-events-none">WhatsApp</span>
             </a>
-          </motion.div>
+          </MotionDiv>
 
-          <motion.div drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
+          <MotionDiv drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
             <a href={SITE_CONFIG.location.wazeLink} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none rotate-6 -mt-2 group">
               <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5 pointer-events-none">
                 <img src="/waze.png" alt="Waze" className="w-full h-full object-cover outline-none border-none" />
               </div>
               <span className="text-xs sm:text-sm font-sans font-medium text-zinc-400 transition-colors pointer-events-none">Waze</span>
             </a>
-          </motion.div>
+          </MotionDiv>
 
         </div>
       </div>
@@ -620,9 +817,9 @@ export default function App() {
                     )}
                   </button>
                   
-                  <AnimatePresence initial={false}>
+                  <MotionAnimatePresence initial={false}>
                     {activeFAQ === index && (
-                      <motion.div
+                      <MotionDiv
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -632,9 +829,9 @@ export default function App() {
                         <div className="px-4 pb-4 pt-1 text-[11px] sm:text-xs leading-relaxed text-zinc-400 font-sans border-t border-zinc-900/60">
                           {faq.answer}
                         </div>
-                      </motion.div>
+                      </MotionDiv>
                     )}
-                  </AnimatePresence>
+                  </MotionAnimatePresence>
                 </div>
               ))}
             </div>
