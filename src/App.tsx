@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Instagram, 
   MessageSquare, 
@@ -132,6 +132,9 @@ export default function App() {
   const [selectedAtv, setSelectedAtv] = useState<string>("cfmoto-520");
   const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
   
+  // Scroll visibility state for Navbar
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  
   // Interactive Reservation states
   const [reservationAtvsCount, setReservationAtvsCount] = useState<number>(2);
   const [reservationDuration, setReservationDuration] = useState<number>(2); // hours
@@ -155,6 +158,11 @@ export default function App() {
     setActiveFAQ(activeFAQ === index ? null : index);
   };
 
+  // Scroll handler for the inner phone container
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    setIsScrolled(e.currentTarget.scrollTop > 60);
+  };
+
   // Pre-configured dynamic WhatsApp booking link
   const getWhatsAppLink = () => {
     const formattedDate = reservationDate ? new Date(reservationDate).toLocaleDateString('ro-RO') : 'Nespecificată';
@@ -174,13 +182,13 @@ export default function App() {
   return (
     <div id="atv-app-wrapper" className="min-h-screen w-full bg-[#020202] text-white font-sans overflow-x-hidden relative flex justify-center items-center">
       
-      {/* Dynamic Background Noise/Lighting Grid for high-end motorsport look */}
+      {/* Dynamic Background Noise/Lighting Grid */}
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,18,18,0.73)_1px,transparent_1px),linear-gradient(90deg,rgba(18,18,18,0.73)_1px,transparent_1px)] bg-[size:24px_24px] z-0"></div>
       
-      {/* Decorative Radial Aurora Glowing in signature neon yellow is extremely atmospheric */}
+      {/* Decorative Radial Aurora Glowing */}
       <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#D4FF00] rounded-full blur-[240px] opacity-10 pointer-events-none z-0"></div>
       
-      {/* Mud Splatter SVG overlays scattered elegantly on background corners to mimic grunge flier */}
+      {/* Mud Splatter SVG overlays */}
       <div className="absolute top-10 left-4 w-32 h-32 text-zinc-900 pointer-events-none opacity-20 rotate-45 select-none hidden lg:block z-0">
         <svg viewBox="0 0 100 100" fill="currentColor">
           <path d="M12,45 C20,30 35,42 45,20 C50,35 68,22 75,40 C80,55 60,65 55,85 C42,75 25,80 12,45 Z" />
@@ -199,7 +207,7 @@ export default function App() {
         </svg>
       </div>
 
-      {/* DESKTOP EXCLUSIVE ADORNMENTS (Visible only beside the mobile mock-phone) */}
+      {/* DESKTOP EXCLUSIVE ADORNMENTS */}
       <div className="hidden lg:flex flex-col absolute left-12 top-24 max-w-sm pointer-events-auto z-10 space-y-6">
         <div className="inline-flex items-center gap-2 bg-zinc-900/80 border border-zinc-800 px-3 py-1.5 rounded-full text-xs text-zinc-400 backdrop-blur-sm self-start">
           <span className="w-2 h-2 rounded-full bg-[#D4FF00] animate-pulse"></span>
@@ -228,14 +236,12 @@ export default function App() {
       <div className="hidden lg:flex flex-col absolute right-12 top-24 max-w-sm items-end text-right pointer-events-auto z-10 space-y-6">
         <div className="bg-zinc-950/60 p-5 rounded-2xl border border-zinc-800/80 backdrop-blur-md flex flex-col items-center gap-3">
           <div className="p-3 bg-white rounded-xl">
-            {/* Elegant QR Code Mock representing link for easy scanning */}
             <svg className="w-28 h-28 text-black" viewBox="0 0 100 100" fill="currentColor">
               <path d="M5,5 h20 v20 h-20 z M10,10 h10 v10 h-10 z M30,5 h10 v10 h-10 z M5,30 h10 v10 h-10 z M25,30 h5 v5 h-5 z M25,40 h5 v5 h-5 z M35,25 h5 v15 h-5 z" />
               <path d="M5,75 h20 v20 h-20 z M10,80 h10 v10 h-10 z M30,75 h20 v10 h-20 z M45,65 h10 v20 h-10 z" />
               <path d="M75,5 h20 v20 h-20 z M80,10 h10 v10 h-10 z M65,5 h5 v10 h-5 z M55,15 h10 v5 h-10 z" />
               <path d="M60,45 h15 v5 h-15 z M85,35 h15 v10 h-15 z M70,55 h10 v15 h-10 z M90,65 h10 v15 h-10 z" />
               <path d="M85,85 h10 v10 h-10 z M60,80 h15 v5 h-15 z M55,60 h5 v5 h-5 z" />
-              {/* Target dots */}
               <rect x="13" y="13" width="4" height="4" fill="#D4FF00"/>
               <rect x="83" y="13" width="4" height="4" fill="#D4FF00"/>
               <rect x="13" y="83" width="4" height="4" fill="#D4FF00"/>
@@ -256,14 +262,10 @@ export default function App() {
         </div>
       </div>
 
-      {/* CORE WRAPPER FOR RESPONSIVE PREVIEW:
-          Produces 100vh on mobile device screen, and a perfectly centered mock phone container of max-380px grid structure on Desktop */}
       <div className="w-full sm:w-auto h-screen sm:h-[92vh] flex justify-center items-center z-10 pointer-events-none px-0 sm:px-4">
         
-        {/* Smartphone mockup shell decoration (displays only on screen width >= sm) */}
         <div id="smartphone-wrapper" className="w-full max-w-[440px] h-full sm:h-[92vh] aspect-[9/19.5] sm:border-[8px] sm:border-[#222] sm:bg-black rounded-none sm:rounded-[44px] shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col relative pointer-events-auto select-none sm:ring-2 sm:ring-zinc-900/60">
           
-          {/* Smartphone Hardware Notch (Dynamic Island lookalike) */}
           <div className="absolute top-2 left-1/2 -translate-x-1/2 w-32 h-6 bg-[#000000] rounded-full z-50 hidden sm:flex items-center justify-between px-3 border border-zinc-800/30">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500/80 animate-pulse"></span>
             <div className="w-12 h-1 bg-zinc-900 rounded-full"></div>
@@ -272,67 +274,74 @@ export default function App() {
             </span>
           </div>
 
-          {/* Device Glossy Shine Highlight Layer */}
           <div className="absolute top-0 right-0 w-[50%] h-full bg-gradient-to-l from-white/[0.02] to-transparent pointer-events-none z-40"></div>
 
-          {/* MAIN INTERNAL SCREEN VIEWPORT (Scrollable) */}
-          <div className="w-full h-full bg-[#000] overflow-y-auto overflow-x-hidden flex flex-col relative pb-24 scroll-smooth">
+          {/* MAIN SCROLLABLE CONTAINER */}
+          <div onScroll={handleScroll} className="w-full h-full bg-[#000] overflow-y-auto overflow-x-hidden flex flex-col relative pb-24 scroll-smooth">
             
-            {/* FROSTED GLASS NAVBAR (Pill Centrat, Transparent & Glow) */}
-            <div className="sticky top-6 z-50 w-max mx-auto px-6 py-2 rounded-full bg-black/20 backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center">
+            {/* FROSTED GLASS NAVBAR (Apare la scroll) */}
+            <div className={`sticky top-6 z-50 w-max mx-auto px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg flex items-center justify-center transition-all duration-500 ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6 pointer-events-none'}`}>
               <span className="text-white font-bold tracking-wider text-sm drop-shadow-[0_0_8px_#D4FF00]">
                 @atvcomana
               </span>
             </div>
 
-           {/* SOCIAL NAVIGATION & QUICK ACTIONS */}
-            <div className="w-full flex flex-col items-center justify-center pt-10 pb-10 border-b border-zinc-900/50 relative z-20 px-4 [-webkit-tap-highlight-color:transparent]">
+            {/* SOCIAL NAVIGATION & QUICK ACTIONS (Centrat, Elastic) */}
+            <div className="w-full min-h-[55vh] flex flex-col items-center justify-center pt-28 pb-12 border-b border-zinc-900/50 relative z-20 px-4 [-webkit-tap-highlight-color:transparent]">
               
               {/* Titlu Mare Deasupra */}
-              <span className="text-2xl sm:text-3xl font-black tracking-[0.1em] text-white uppercase mb-10 text-center drop-shadow-lg">
+              <span className="text-2xl sm:text-3xl font-black tracking-[0.1em] text-white uppercase mb-12 text-center drop-shadow-lg">
                 Acțiuni Rapide
               </span>
 
-              {/* Containerul cu iconițele aruncate */}
-              <div className="flex flex-row flex-wrap items-center justify-center gap-6 overflow-visible w-full">
+              {/* Containerul cu iconițele aruncate & trăgabile */}
+              <div className="flex flex-row flex-wrap items-center justify-center gap-6 sm:gap-8 overflow-visible w-full">
               
                 {/* TikTok */}
-                <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer -rotate-6 mt-3">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative border border-white/5">
-                    <img src="/tiktok.png" alt="TikTok" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
-                  </div>
-                  <span className="text-xs font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">TikTok</span>
-                </a>
+                <motion.div drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
+                  <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none -rotate-6 mt-3 group">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5 pointer-events-none">
+                      <img src="/tiktok.png" alt="TikTok" className="w-full h-full object-cover outline-none border-none" />
+                    </div>
+                    <span className="text-xs font-sans font-medium text-zinc-400 transition-colors pointer-events-none">TikTok</span>
+                  </a>
+                </motion.div>
 
                 {/* Instagram */}
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer rotate-3 -mt-3">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative border border-white/5">
-                    <img src="/instagram.png" alt="Instagram" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
-                  </div>
-                  <span className="text-xs font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">Instagram</span>
-                </a>
+                <motion.div drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
+                  <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none rotate-3 -mt-3 group">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5 pointer-events-none">
+                      <img src="/instagram.png" alt="Instagram" className="w-full h-full object-cover outline-none border-none" />
+                    </div>
+                    <span className="text-xs font-sans font-medium text-zinc-400 transition-colors pointer-events-none">Instagram</span>
+                  </a>
+                </motion.div>
 
                 {/* WhatsApp */}
-                <a href="https://wa.me/40731441122" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer -rotate-3 mt-4">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative border border-white/5">
-                    <img src="/whatsap.png" alt="WhatsApp" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
-                  </div>
-                  <span className="text-xs font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">WhatsApp</span>
-                </a>
+                <motion.div drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
+                  <a href="https://wa.me/40731441122" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none -rotate-3 mt-4 group">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5 pointer-events-none">
+                      <img src="/whatsap.png" alt="WhatsApp" className="w-full h-full object-cover outline-none border-none" />
+                    </div>
+                    <span className="text-xs font-sans font-medium text-zinc-400 transition-colors pointer-events-none">WhatsApp</span>
+                  </a>
+                </motion.div>
 
                 {/* Waze */}
-                <a href="https://waze.com/ul?ll=44.170668,26.136867&navigate=yes" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer rotate-6 -mt-2">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative border border-white/5">
-                    <img src="/waze.png" alt="Waze" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
-                  </div>
-                  <span className="text-xs font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">Waze</span>
-                </a>
+                <motion.div drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
+                  <a href="https://waze.com/ul?ll=44.170668,26.136867&navigate=yes" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none rotate-6 -mt-2 group">
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5 pointer-events-none">
+                      <img src="/waze.png" alt="Waze" className="w-full h-full object-cover outline-none border-none" />
+                    </div>
+                    <span className="text-xs font-sans font-medium text-zinc-400 transition-colors pointer-events-none">Waze</span>
+                  </a>
+                </motion.div>
 
               </div>
             </div>
 
             {/* INTERACTIVE FLEET SELECTION SLIDER */}
-            <div className="px-6 py-4 flex flex-col gap-4">
+            <div className="px-6 py-4 flex flex-col gap-4 mt-4">
               <div className="flex justify-between items-baseline">
                 <h3 className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
                   Alege Monstrul Off-Road
@@ -357,9 +366,8 @@ export default function App() {
                 ))}
               </div>
 
-              {/* Active ATV Specs Card with Dynamic Transition styling */}
+              {/* Active ATV Specs Card */}
               <div className="bg-zinc-950/90 border border-zinc-800/90 rounded-2xl p-4 relative overflow-hidden shadow-2xl">
-                {/* Decorative extreme visual elements */}
                 <div className="absolute top-0 right-0 py-1.5 px-3 bg-[#D4FF00] text-black font-mono text-[9px] font-bold uppercase rounded-bl-xl shadow-md">
                   {currentAtvObj.badge}
                 </div>
@@ -402,15 +410,13 @@ export default function App() {
               </div>
             </div>
 
-            {/* INTEGRATED GOOGLE MAP MOVED HERE */}
+            {/* INTEGRATED GOOGLE MAP */}
             <div className="px-6 py-4 flex flex-col gap-3">
               <h3 className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
                 Locaţia Traseului în Comana
               </h3>
 
               <div className="bg-white/5 backdrop-blur-md border border-[#D4FF00]/20 rounded-2xl overflow-hidden shadow-xl p-2 relative group">
-                
-                {/* Visual Location Info Strip */}
                 <div className="flex justify-between items-center px-2 py-2 text-[11px] font-space text-zinc-300">
                   <div className="flex items-center gap-1.5">
                     <MapPin className="w-3.5 h-3.5 text-[#D4FF00]" />
@@ -421,7 +427,6 @@ export default function App() {
                   </span>
                 </div>
 
-                {/* Google Maps Iframe */}
                 <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-zinc-900">
                   <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11531.621430032544!2d26.1368673!3d44.170668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1ea0da97611ab%3A0xe5a36ebd77d07996!2sComana%20Adventure%20Park!5e0!3m2!1sen!2sro!4v1700000000000!5m2!1sen!2sro" 
@@ -447,11 +452,10 @@ export default function App() {
                     Deschide Navigaţia <Navigation className="w-3 h-3" />
                   </a>
                 </div>
-
               </div>
             </div>
 
-            {/* RECURRING EXCURSIONS / TRAILS CARD EXPLORER */}
+            {/* RECURRING EXCURSIONS / TRAILS */}
             <div className="px-6 py-4 flex flex-col gap-4">
               <h3 className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
                 Trasee Off-Road Disponibile
@@ -490,7 +494,7 @@ export default function App() {
               </div>
             </div>
 
-            {/* DYNAMIC RESERVATION PLANNER & PRICE CALCULATOR */}
+            {/* DYNAMIC RESERVATION PLANNER */}
             <div className="px-6 py-5 flex flex-col gap-4">
               <div className="bg-zinc-950 border border-[#D4FF00]/20 rounded-2xl p-4 shadow-xl relative">
                 
@@ -502,7 +506,6 @@ export default function App() {
                 </div>
 
                 <div className="space-y-4">
-                  {/* Select vehicle */}
                   <div>
                     <label className="text-[10px] uppercase font-mono text-zinc-400 block mb-1.5">Model ATV Selectat</label>
                     <select 
@@ -516,7 +519,6 @@ export default function App() {
                     </select>
                   </div>
 
-                  {/* Quantity and duration sliders info */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="text-[10px] uppercase font-mono text-zinc-400 flex justify-between mb-1">
@@ -549,7 +551,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Date and Time selectors for realism */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="text-[10px] uppercase font-mono text-zinc-400 block mb-1">Dată Traseu</label>
@@ -580,7 +581,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Contact phone number */}
                   <div>
                     <label className="text-[10px] uppercase font-mono text-zinc-400 block mb-1">Numărul Tău de Contact (Opțional)</label>
                     <input 
@@ -592,7 +592,6 @@ export default function App() {
                     />
                   </div>
 
-                  {/* Pricing Output Dashboard */}
                   <div className="bg-[#121212] rounded-xl p-3 border border-zinc-900 flex justify-between items-center mt-2">
                     <div>
                       <div className="text-[9px] text-zinc-500 uppercase font-mono">Calcul Estimativ</div>
@@ -606,7 +605,6 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Send WhatsApp Request Button */}
                   <a 
                     href={getWhatsAppLink()}
                     target="_blank" 
@@ -620,9 +618,7 @@ export default function App() {
                   <div className="text-center text-[9px] text-zinc-500 font-mono italic">
                     *Preţurile includ tot echipamentul, ghidul şi instructajul. Fără costuri ascunse.
                   </div>
-
                 </div>
-
               </div>
             </div>
 
@@ -669,8 +665,6 @@ export default function App() {
                 ))}
               </div>
             </div>
-
-
 
             {/* COMPOSITE BRAND FOOTER FOOTPRINT */}
             <div className="px-6 py-8 text-center border-t border-zinc-950 mt-4 flex flex-col items-center gap-2.5">
