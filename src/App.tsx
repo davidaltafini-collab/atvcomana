@@ -179,8 +179,6 @@ function useMotionTools(): MotionTools {
 
   useEffect(() => {
     let isMounted = true;
-    let idleId: number | null = null;
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const loadMotion = () => {
       import("framer-motion").then(({ motion, AnimatePresence }) => {
@@ -192,21 +190,12 @@ function useMotionTools(): MotionTools {
       });
     };
 
-    if ("requestIdleCallback" in window) {
-      idleId = (window as Window & { requestIdleCallback: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number })
-        .requestIdleCallback(loadMotion, { timeout: 1200 });
-    } else {
-      timeoutId = globalThis.setTimeout(loadMotion, 800);
-    }
+    // Load after first paint settles - short delay to not block interactivity
+    const timeoutId = setTimeout(loadMotion, 100);
 
     return () => {
       isMounted = false;
-      if (idleId !== null && "cancelIdleCallback" in window) {
-        (window as Window & { cancelIdleCallback: (handle: number) => void }).cancelIdleCallback(idleId);
-      }
-      if (timeoutId !== null) {
-        window.clearTimeout(timeoutId);
-      }
+      clearTimeout(timeoutId);
     };
   }, []);
 
@@ -327,14 +316,47 @@ export default function App() {
   return isDebugPage ? <DebugPage /> : <MainPage />;
 }
 
+function LazyIframe({ src, title, className }: { src: string; title: string; className: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="w-full h-full">
+      {isVisible ? (
+        <iframe src={src} style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer" title={title} className={className} />
+      ) : (
+        <div className="w-full h-full bg-zinc-900 flex items-center justify-center">
+          <span className="text-zinc-600 text-xs font-mono">Încarcă harta...</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function MainPage() {
   const { MotionDiv, MotionAnimatePresence } = useMotionTools();
 
   // UI states
   const [selectedAtv, setSelectedAtv] = useState<string>("cfmoto-520");
   const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
-  
-  // Scroll visibility state for Navbar 
+
+  // Scroll visibility state for Navbar
   const [isNavbarVisible, setIsNavbarVisible] = useState<boolean>(true);
   const lastScrollYRef = useRef<number>(0);
   
@@ -357,23 +379,23 @@ function MainPage() {
     setReservationDate(`${yyyy}-${mm}-${dd}`);
   }, []);
 
-  // Smart Scroll Handler (Apare la scroll up, dispare la scroll down)
+  // Smart Scroll Handler - only re-renders when visibility actually changes
+  const isNavbarVisibleRef = useRef(true);
   useEffect(() => {
     let ticking = false;
 
     const handleScroll = () => {
       if (ticking) return;
-
       ticking = true;
       window.requestAnimationFrame(() => {
         const currentScrollY = window.scrollY;
-        if (currentScrollY > lastScrollYRef.current && currentScrollY > 80) {
-          setIsNavbarVisible(false); // Scroll în JOS -> Ascunde
-        } else {
-          setIsNavbarVisible(true);  // Scroll în SUS -> Arată
-        }
+        const shouldShow = !(currentScrollY > lastScrollYRef.current && currentScrollY > 80);
         lastScrollYRef.current = currentScrollY;
         ticking = false;
+        if (shouldShow !== isNavbarVisibleRef.current) {
+          isNavbarVisibleRef.current = shouldShow;
+          setIsNavbarVisible(shouldShow);
+        }
       });
     };
 
@@ -402,10 +424,6 @@ function MainPage() {
     return `https://wa.me/${SITE_CONFIG.contact.whatsapp}?text=${encodeURIComponent(message)}`;
   };
 
-  // ==========================================
-  // COMPONENTĂ REUTILIZABILĂ PENTRU CALCULATOR
-  // O definim o singură dată și o randăm inteligent (pe mobil sau desktop)
-  // ==========================================
   const CalculatorForm = () => (
     <div className="bg-zinc-950 border border-[#D4FF00]/20 rounded-2xl p-5 sm:p-6 shadow-xl relative w-full">
       <div className="flex items-center gap-2 mb-5">
@@ -534,12 +552,12 @@ function MainPage() {
   return (
     <div className="min-h-screen w-full bg-[#020202] text-white font-sans overflow-x-hidden relative pb-28">
       
-      {/* Background Effects */}
-      <div className="fixed inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,18,18,0.73)_1px,transparent_1px),linear-gradient(90deg,rgba(18,18,18,0.73)_1px,transparent_1px)] bg-[size:24px_24px] z-0"></div>
-      <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#D4FF00] rounded-full blur-[280px] opacity-10 pointer-events-none z-0"></div>
+      {/* Background Effects - static radial gradient instead of massive blur for mobile perf */}
+      <div className="fixed inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,18,18,0.73)_1px,transparent_1px),linear-gradient(90deg,rgba(18,18,18,0.73)_1px,transparent_1px)] bg-[size:24px_24px] z-0 hidden sm:block"></div>
+      <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(212,255,0,0.08)_0%,transparent_70%)] pointer-events-none z-0"></div>
 
-      {/* FROSTED GLASS NAVBAR */}
-      <div className={`fixed z-50 w-max left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg flex items-center justify-center transition-all duration-500 ${isNavbarVisible ? 'top-6 opacity-100' : '-top-20 opacity-0 pointer-events-none'}`}>
+      {/* FROSTED GLASS NAVBAR - solid bg on mobile for perf, backdrop-blur on desktop only */}
+      <div className={`fixed z-50 w-max left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-zinc-900/90 sm:bg-white/10 sm:backdrop-blur-md border border-white/20 shadow-lg flex items-center justify-center transition-[top,opacity] duration-500 ${isNavbarVisible ? 'top-6 opacity-100' : '-top-20 opacity-0 pointer-events-none'}`}>
         <span className="text-white font-bold tracking-wider text-sm drop-shadow-[0_0_8px_#D4FF00]">
           {SITE_CONFIG.brand.handle}
         </span>
@@ -697,16 +715,12 @@ function MainPage() {
                   <MapPin className="w-10 h-10 text-[#D4FF00] fill-black/50" />
                 </div>
 
-                {/* Iframe-ul este mărit la 150% pentru a ascunde textele Google */}
-                <iframe 
+                {/* Iframe-ul este mărit la 150% pentru a ascunde textele Google - lazy loaded */}
+                <LazyIframe
                   src={SITE_CONFIG.location.googleMapsEmbed}
-                  style={{ border: 0 }} 
-                  allowFullScreen={true} 
-                  loading="lazy" 
-                  referrerPolicy="no-referrer"
                   title="Harta Inchiriere ATV Comana"
                   className="absolute top-1/2 left-1/2 w-[150%] h-[150%] -translate-x-1/2 -translate-y-1/2 grayscale contrast-[1.2] brightness-[0.7] transition-all duration-300 pointer-events-none group-hover:brightness-[0.8] group-hover:grayscale-0"
-                ></iframe>
+                />
               </a>
 
               <div className="pt-3 pb-1.5 px-2 flex justify-between items-center text-[9px] sm:text-[10px] text-zinc-500 font-mono bg-zinc-950 rounded-b-xl">
