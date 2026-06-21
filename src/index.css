@@ -4,6 +4,17 @@ html,
 body,
 #root {
   min-height: 100%;
+  min-height: 100dvh;
+  background: #020202;
+}
+
+/* Safari bottom bar safe area fix */
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+html {
   background: #020202;
 }
 

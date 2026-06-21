@@ -14,7 +14,7 @@ import {
 // ==========================================
 const SITE_CONFIG = {
   brand: {
-    name: "ATV COMANA PRESTIGE",
+    name: "ATV COMANA",
     handle: "@atvcomana",
   },
   contact: {
@@ -23,11 +23,11 @@ const SITE_CONFIG = {
     whatsapp: "40774528684",
   },
   social: {
-    tiktok: "https://www.tiktok.com/@atv.comana?is_from_webapp=1&sender_device=pc",       // Link TikTok
+    tiktok: "https://www.tiktok.com/@atv.comana",       // Link TikTok
     instagram: "https://instagram.com/atvcomana",  // Link Instagram
   },
   location: {
-    name: "Pensiunea/Parcul Comana, Giurgiu",
+    name: "Centru Comana, Giurgiu",
     distance: "40 MIN din Bucureşti",
     wazeLink: "https://waze.com/ul?ll=44.170668,26.136867&navigate=yes",
     googleMapsLink: "https://maps.app.goo.gl/FRWBu3G4HoQAUCHk6?g_st=ic",
@@ -414,10 +414,12 @@ function MainPage() {
   };
 
   const haptic = (style: "light" | "medium" | "heavy" = "light") => {
-    if ("vibrate" in navigator) {
-      const ms = style === "light" ? 5 : style === "medium" ? 12 : 20;
-      navigator.vibrate(ms);
-    }
+    try {
+      if (navigator.vibrate) {
+        const ms = style === "light" ? 5 : style === "medium" ? 12 : 20;
+        navigator.vibrate(ms);
+      }
+    } catch { /* Safari iOS doesn't support vibrate */ }
   };
 
   const CalculatorForm = () => (
@@ -475,34 +477,32 @@ function MainPage() {
           </div>
         </div>
 
-        <div>
-          <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Dată Traseu</label>
-          <input
-            type="date"
-            value={reservationDate}
-            onChange={(e) => { setReservationDate(e.target.value); haptic("medium"); }}
-            onTouchStart={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1.03)")}
-            onTouchEnd={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1)")}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark] transition-transform duration-150 active:scale-[1.03]"
-          />
-        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="min-w-0">
+            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Dată Traseu</label>
+            <input
+              type="date"
+              value={reservationDate}
+              onChange={(e) => { setReservationDate(e.target.value); haptic("medium"); }}
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-2 h-[48px] text-[11px] sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark] transition-transform duration-150 active:scale-[1.02]"
+            />
+          </div>
 
-        <div>
-          <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Ora Plecării</label>
-          <select
-            value={reservationTime}
-            onChange={(e) => { setReservationTime(e.target.value); haptic("medium"); }}
-            onTouchStart={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1.03)")}
-            onTouchEnd={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1)")}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.03]"
-          >
-            <option value="09:00">09:00 (Răsărit)</option>
-            <option value="11:00">11:00 (Dimineaţă)</option>
-            <option value="13:00">13:00 (Prânz)</option>
-            <option value="15:00">15:00 (Durează mult)</option>
-            <option value="17:00">17:00 (Apus de vis)</option>
-            <option value="19:00">19:00 (Tombă de seară)</option>
-          </select>
+          <div className="min-w-0">
+            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Ora Plecării</label>
+            <select
+              value={reservationTime}
+              onChange={(e) => { setReservationTime(e.target.value); haptic("medium"); }}
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-2 h-[48px] text-[11px] sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.02]"
+            >
+              <option value="09:00">09:00</option>
+              <option value="11:00">11:00</option>
+              <option value="13:00">13:00</option>
+              <option value="15:00">15:00</option>
+              <option value="17:00">17:00</option>
+              <option value="19:00">19:00</option>
+            </select>
+          </div>
         </div>
 
         <div>
@@ -512,9 +512,7 @@ function MainPage() {
             placeholder="Ex: Andrei Popescu"
             value={reservationName}
             onChange={(e) => setReservationName(e.target.value)}
-            onTouchStart={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1.02)")}
-            onTouchEnd={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1)")}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-xs sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#D4FF00] font-mono transition-transform duration-150 active:scale-[1.02]"
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-xs sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#D4FF00] font-mono"
           />
         </div>
 
@@ -536,9 +534,7 @@ function MainPage() {
           target="_blank"
           rel="noreferrer"
           onClick={() => haptic("heavy")}
-          onTouchStart={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1.04)")}
-          onTouchEnd={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1)")}
-          className="w-full inline-flex items-center justify-center gap-2 py-4 bg-emerald-500 hover:bg-emerald-600 text-black font-extrabold uppercase text-xs sm:text-sm rounded-xl transition-transform duration-150 shadow-lg active:scale-[1.04] cursor-pointer"
+          className="w-full inline-flex items-center justify-center gap-2 py-4 bg-emerald-500 hover:bg-emerald-600 text-black font-extrabold uppercase text-xs sm:text-sm rounded-xl transition-transform duration-150 shadow-lg active:scale-[1.03] cursor-pointer"
         >
           <MessageSquare className="w-4 h-4 fill-black/10" />
           Trimite Rezervarea pe WhatsApp
