@@ -395,7 +395,7 @@ export default function App() {
             <div className="relative z-30 active:scale-95 transition-transform">
               <a href={SITE_CONFIG.social.tiktok} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none -rotate-6 mt-3 group" aria-label="Urmărește-ne pe TikTok">
                 <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5">
-                  <img src="/tiktok.webp" alt="" width="112" height="112" loading="eager" decoding="async" className="w-full h-full object-cover" />
+                  <img src="/tiktok.webp" alt="" width="160" height="160" loading="eager" decoding="async" className="w-full h-full object-cover" />
                 </div>
                 <span className="text-xs sm:text-sm font-sans font-medium text-zinc-400 transition-colors">TikTok</span>
               </a>
@@ -404,7 +404,7 @@ export default function App() {
             <div className="relative z-30 active:scale-95 transition-transform">
               <a href={SITE_CONFIG.social.instagram} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none rotate-3 -mt-3 group" aria-label="Urmărește-ne pe Instagram">
                 <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5">
-                  <img src="/instagram.webp" alt="" width="112" height="112" loading="eager" decoding="async" className="w-full h-full object-cover" />
+                  <img src="/instagram.webp" alt="" width="160" height="160" loading="eager" decoding="async" className="w-full h-full object-cover" />
                 </div>
                 <span className="text-xs sm:text-sm font-sans font-medium text-zinc-400 transition-colors">Instagram</span>
               </a>
@@ -413,7 +413,7 @@ export default function App() {
             <div className="relative z-30 active:scale-95 transition-transform">
               <a href={`https://wa.me/${SITE_CONFIG.contact.whatsapp}`} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none -rotate-3 mt-4 group" aria-label="Contactează-ne pe WhatsApp">
                 <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5">
-                  <img src="/whatsap.webp" alt="" width="112" height="112" loading="eager" decoding="async" className="w-full h-full object-cover" />
+                  <img src="/whatsap.webp" alt="" width="160" height="160" loading="eager" decoding="async" className="w-full h-full object-cover" />
                 </div>
                 <span className="text-xs sm:text-sm font-sans font-medium text-zinc-400 transition-colors">WhatsApp</span>
               </a>
@@ -422,7 +422,7 @@ export default function App() {
             <div className="relative z-30 active:scale-95 transition-transform">
               <a href={SITE_CONFIG.location.wazeLink} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none rotate-6 -mt-2 group" aria-label="Deschide locația în Waze">
                 <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5">
-                  <img src="/waze.webp" alt="" width="112" height="112" loading="eager" decoding="async" className="w-full h-full object-cover" />
+                  <img src="/waze.webp" alt="" width="160" height="160" loading="eager" decoding="async" className="w-full h-full object-cover" />
                 </div>
                 <span className="text-xs sm:text-sm font-sans font-medium text-zinc-400 transition-colors">Waze</span>
               </a>
