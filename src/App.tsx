@@ -30,8 +30,7 @@ const SITE_CONFIG = {
     name: "Pensiunea/Parcul Comana, Giurgiu",
     distance: "40 MIN din Bucureşti",
     wazeLink: "https://waze.com/ul?ll=44.170668,26.136867&navigate=yes",
-    googleMapsLink: "https://www.google.com/maps/search/?api=1&query=44.170668,26.136867",
-    // Embed curat. Am pus z=13 pentru un zoom out elegant.
+    googleMapsLink: "https://maps.app.goo.gl/FRWBu3G4HoQAUCHk6?g_st=ic",
     googleMapsEmbed: "https://maps.google.com/maps?q=44.170668,26.136867&z=13&output=embed"
   }
 };
@@ -58,7 +57,7 @@ const FLEET_DATA: ATVModel[] = [
     engine: "400 cc (2023 Model)",
     power: "38 HP - 4x4 Selectabil",
     type: "2 Locuri cu Spătar Premium",
-    pricePerHour: 150,
+    pricePerHour: 250,
     specs: ["Troliu electric 1200kg", "Servodirecţie electronică (EPS)", "Suspensii independente dublu braţ", "Anvelope off-road de înaltă tracţiune"]
   },
   {
@@ -68,7 +67,7 @@ const FLEET_DATA: ATVModel[] = [
     engine: "495 cc (2026 Model)",
     power: "45 HP - Cuplu Maxim",
     type: "2 Locuri cu Protecţie Maximă",
-    pricePerHour: 200,
+    pricePerHour: 250,
     specs: ["Sistem EPS inteligent", "Jante aliaj premium 12\"", "Faruri LED Ultra-Bright", "Cutie automată CVT cu frână de motor"]
   }
 ];
@@ -414,8 +413,15 @@ function MainPage() {
     return `https://wa.me/${SITE_CONFIG.contact.whatsapp}?text=${encodeURIComponent(message)}`;
   };
 
+  const haptic = (style: "light" | "medium" | "heavy" = "light") => {
+    if ("vibrate" in navigator) {
+      const ms = style === "light" ? 5 : style === "medium" ? 12 : 20;
+      navigator.vibrate(ms);
+    }
+  };
+
   const CalculatorForm = () => (
-    <div className="bg-zinc-950 border border-[#D4FF00]/20 rounded-2xl p-5 sm:p-6 shadow-xl relative w-full">
+    <div className="bg-zinc-950 border border-[#D4FF00]/20 rounded-2xl p-5 sm:p-6 shadow-xl relative w-full overflow-hidden">
       <div className="flex items-center gap-2 mb-5">
         <Sliders className="w-5 h-5 text-[#D4FF00]" />
         <h4 className="text-sm sm:text-base font-black uppercase text-white font-display italic tracking-wide">
@@ -426,10 +432,10 @@ function MainPage() {
       <div className="space-y-5">
         <div>
           <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Model ATV Selectat</label>
-          <select 
+          <select
             value={selectedAtv}
-            onChange={(e) => setSelectedAtv(e.target.value)}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 min-h-[44px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer"
+            onChange={(e) => { setSelectedAtv(e.target.value); haptic("medium"); }}
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.02]"
           >
             {FLEET_DATA.map(atv => (
               <option key={atv.id} value={atv.id}>{atv.name} ({atv.pricePerHour} RON/h)</option>
@@ -437,19 +443,19 @@ function MainPage() {
           </select>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 flex justify-between mb-2">
               <span>Cantitate</span>
               <strong className="text-white text-[12px] sm:text-sm">{reservationAtvsCount} ATV</strong>
             </label>
-            <input 
-              type="range" 
-              min="1" 
-              max="8" 
+            <input
+              type="range"
+              min="1"
+              max="8"
               value={reservationAtvsCount}
-              onChange={(e) => setReservationAtvsCount(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-zinc-900 rounded-lg appearance-none cursor-pointer accent-[#D4FF00]"
+              onChange={(e) => { setReservationAtvsCount(parseInt(e.target.value)); haptic("light"); }}
+              className="w-full h-2 bg-zinc-900 rounded-lg appearance-none cursor-pointer accent-[#D4FF00]"
             />
           </div>
 
@@ -458,54 +464,57 @@ function MainPage() {
               <span>Durată</span>
               <strong className="text-[#D4FF00] text-[12px] sm:text-sm">{reservationDuration} Ore</strong>
             </label>
-            <input 
-              type="range" 
-              min="1" 
-              max="8" 
+            <input
+              type="range"
+              min="1"
+              max="8"
               value={reservationDuration}
-              onChange={(e) => setReservationDuration(parseInt(e.target.value))}
-              className="w-full h-1.5 bg-zinc-900 rounded-lg appearance-none cursor-pointer accent-[#D4FF00]"
+              onChange={(e) => { setReservationDuration(parseInt(e.target.value)); haptic("light"); }}
+              className="w-full h-2 bg-zinc-900 rounded-lg appearance-none cursor-pointer accent-[#D4FF00]"
             />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Dată Traseu</label>
-            {/* Input Data Reparat - Forțează dark mode și înălțime uniformă */}
-            <input 
-              type="date" 
-              value={reservationDate}
-              onChange={(e) => setReservationDate(e.target.value)}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 min-h-[44px] block text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark]"
-            />
-          </div>
-
-          <div>
-            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Ora Plecării</label>
-            <select 
-              value={reservationTime}
-              onChange={(e) => setReservationTime(e.target.value)}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 min-h-[44px] block text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer"
-            >
-              <option value="09:00">09:00 (Răsărit)</option>
-              <option value="11:00">11:00 (Dimineaţă)</option>
-              <option value="13:00">13:00 (Prânz)</option>
-              <option value="15:00">15:00 (Durează mult)</option>
-              <option value="17:00">17:00 (Apus de vis)</option>
-              <option value="19:00">19:00 (Tombă de seară)</option>
-            </select>
           </div>
         </div>
 
         <div>
+          <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Dată Traseu</label>
+          <input
+            type="date"
+            value={reservationDate}
+            onChange={(e) => { setReservationDate(e.target.value); haptic("medium"); }}
+            onTouchStart={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1.03)")}
+            onTouchEnd={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1)")}
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark] transition-transform duration-150 active:scale-[1.03]"
+          />
+        </div>
+
+        <div>
+          <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Ora Plecării</label>
+          <select
+            value={reservationTime}
+            onChange={(e) => { setReservationTime(e.target.value); haptic("medium"); }}
+            onTouchStart={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1.03)")}
+            onTouchEnd={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1)")}
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.03]"
+          >
+            <option value="09:00">09:00 (Răsărit)</option>
+            <option value="11:00">11:00 (Dimineaţă)</option>
+            <option value="13:00">13:00 (Prânz)</option>
+            <option value="15:00">15:00 (Durează mult)</option>
+            <option value="17:00">17:00 (Apus de vis)</option>
+            <option value="19:00">19:00 (Tombă de seară)</option>
+          </select>
+        </div>
+
+        <div>
           <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Numele Tău (Opțional)</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             placeholder="Ex: Andrei Popescu"
             value={reservationName}
             onChange={(e) => setReservationName(e.target.value)}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 min-h-[44px] block text-xs sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#D4FF00] font-mono"
+            onTouchStart={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1.02)")}
+            onTouchEnd={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1)")}
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-xs sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#D4FF00] font-mono transition-transform duration-150 active:scale-[1.02]"
           />
         </div>
 
@@ -522,11 +531,14 @@ function MainPage() {
           </div>
         </div>
 
-        <a 
+        <a
           href={getWhatsAppLink()}
-          target="_blank" 
+          target="_blank"
           rel="noreferrer"
-          className="w-full inline-flex items-center justify-center gap-2 py-4 bg-emerald-500 hover:bg-emerald-600 text-black font-extrabold uppercase text-xs sm:text-sm rounded-xl transition-all duration-200 shadow-lg active:scale-[0.98] cursor-pointer"
+          onClick={() => haptic("heavy")}
+          onTouchStart={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1.04)")}
+          onTouchEnd={(e: React.TouchEvent<HTMLElement>) => (e.currentTarget.style.transform = "scale(1)")}
+          className="w-full inline-flex items-center justify-center gap-2 py-4 bg-emerald-500 hover:bg-emerald-600 text-black font-extrabold uppercase text-xs sm:text-sm rounded-xl transition-transform duration-150 shadow-lg active:scale-[1.04] cursor-pointer"
         >
           <MessageSquare className="w-4 h-4 fill-black/10" />
           Trimite Rezervarea pe WhatsApp
@@ -546,9 +558,9 @@ function MainPage() {
       <div className="fixed inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,18,18,0.73)_1px,transparent_1px),linear-gradient(90deg,rgba(18,18,18,0.73)_1px,transparent_1px)] bg-[size:24px_24px] z-0 hidden sm:block"></div>
       <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[radial-gradient(ellipse_at_center,rgba(212,255,0,0.08)_0%,transparent_70%)] pointer-events-none z-0"></div>
 
-      {/* FROSTED GLASS NAVBAR - solid bg on mobile for perf, backdrop-blur on desktop only */}
-      <div className={`fixed z-50 w-max left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-zinc-900/90 sm:bg-white/10 sm:backdrop-blur-md border border-white/20 shadow-lg flex items-center justify-center transition-[top,opacity] duration-500 ${isNavbarVisible ? 'top-6 opacity-100' : '-top-20 opacity-0 pointer-events-none'}`}>
-        <span className="text-white font-bold tracking-wider text-sm drop-shadow-[0_0_8px_#D4FF00]">
+      {/* LIQUID GLASS NAVBAR */}
+      <div className={`fixed z-50 w-max left-1/2 -translate-x-1/2 px-7 py-2.5 rounded-full bg-white/[0.06] backdrop-blur-xl border border-white/[0.15] shadow-[0_8px_32px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.1)] flex items-center justify-center transition-[top,opacity] duration-500 ${isNavbarVisible ? 'top-6 opacity-100' : '-top-20 opacity-0 pointer-events-none'}`}>
+        <span className="text-white/90 font-bold tracking-wider text-sm drop-shadow-[0_0_8px_#D4FF00]">
           {SITE_CONFIG.brand.handle}
         </span>
       </div>
