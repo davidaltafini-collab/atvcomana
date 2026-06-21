@@ -278,9 +278,9 @@ export default function App() {
           {/* MAIN INTERNAL SCREEN VIEWPORT (Scrollable) */}
           <div className="w-full h-full bg-[#000] overflow-y-auto overflow-x-hidden flex flex-col relative pb-24 scroll-smooth">
             
-            {/* FROSTED GLASS NAVBAR (Pill Centrat) */}
-            <div className="sticky top-6 z-50 w-max mx-auto px-6 py-2 rounded-full bg-zinc-900/60 backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center">
-              <span className="text-zinc-200 font-medium tracking-wide text-sm drop-shadow-md">
+            {/* FROSTED GLASS NAVBAR (Pill Centrat, Transparent & Glow) */}
+            <div className="sticky top-6 z-50 w-max mx-auto px-6 py-2 rounded-full bg-black/20 backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center">
+              <span className="text-white font-bold tracking-wider text-sm drop-shadow-[0_0_8px_#D4FF00]">
                 @atvcomana
               </span>
             </div>
@@ -288,8 +288,8 @@ export default function App() {
            {/* SOCIAL NAVIGATION & QUICK ACTIONS */}
             <div className="w-full flex flex-col items-center justify-center pt-10 pb-10 border-b border-zinc-900/50 relative z-20 px-4 [-webkit-tap-highlight-color:transparent]">
               
-              {/* Titlu Subtil Deasupra */}
-              <span className="text-[11px] font-black tracking-[0.25em] text-zinc-500 uppercase mb-8 text-center">
+              {/* Titlu Mare Deasupra */}
+              <span className="text-2xl sm:text-3xl font-black tracking-[0.1em] text-white uppercase mb-10 text-center drop-shadow-lg">
                 Acțiuni Rapide
               </span>
 
