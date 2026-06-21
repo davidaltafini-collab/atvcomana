@@ -133,7 +133,8 @@ export default function App() {
   const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
   
   // Scroll visibility state for Navbar
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [isNavbarVisible, setIsNavbarVisible] = useState<boolean>(true);
+  const [lastScrollY, setLastScrollY] = useState<number>(0);
   
   // Interactive Reservation states
   const [reservationAtvsCount, setReservationAtvsCount] = useState<number>(2);
@@ -158,9 +159,15 @@ export default function App() {
     setActiveFAQ(activeFAQ === index ? null : index);
   };
 
-  // Scroll handler for the inner phone container
+  // Scroll handler for the inner phone container (Apare doar la scroll UP)
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    setIsScrolled(e.currentTarget.scrollTop > 60);
+    const currentScrollY = e.currentTarget.scrollTop;
+    if (currentScrollY > lastScrollY && currentScrollY > 80) {
+      setIsNavbarVisible(false); // Ascunde fluid când dai scroll în JOS
+    } else {
+      setIsNavbarVisible(true);  // Arată imediat cum dai scroll în SUS
+    }
+    setLastScrollY(currentScrollY);
   };
 
   // Pre-configured dynamic WhatsApp booking link
@@ -277,20 +284,20 @@ export default function App() {
           <div className="absolute top-0 right-0 w-[50%] h-full bg-gradient-to-l from-white/[0.02] to-transparent pointer-events-none z-40"></div>
 
           {/* MAIN SCROLLABLE CONTAINER */}
-          <div className="w-full h-full bg-[#000] overflow-y-auto overflow-x-hidden flex flex-col relative pb-24 scroll-smooth">
+          <div onScroll={handleScroll} className="w-full h-full bg-[#000] overflow-y-auto overflow-x-hidden flex flex-col relative pb-24 scroll-smooth">
             
-            {/* FROSTED GLASS NAVBAR (Sticky Clasic - curge natural) */}
-            <div className="sticky top-6 z-50 w-max mx-auto px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg flex items-center justify-center mt-6 mb-2">
+            {/* FROSTED GLASS NAVBAR (Apare inteligent doar la scroll UP) */}
+            <div className={`sticky z-50 w-max mx-auto px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg flex items-center justify-center mt-6 mb-2 transition-all duration-500 ${isNavbarVisible ? 'top-6 opacity-100' : '-top-20 opacity-0 pointer-events-none'}`}>
               <span className="text-white font-bold tracking-wider text-sm drop-shadow-[0_0_8px_#D4FF00]">
                 @atvcomana
               </span>
             </div>
 
-            {/* SOCIAL NAVIGATION & QUICK ACTIONS (Coerent, Elastic) */}
+            {/* SOCIAL NAVIGATION & QUICK ACTIONS */}
             <div className="w-full flex flex-col items-center justify-center pt-6 pb-12 border-b border-zinc-900/50 relative z-20 px-6 [-webkit-tap-highlight-color:transparent]">
               
-              {/* Titlu Coerent cu restul site-ului (Aliniat stânga) */}
-              <h3 className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase mb-8 w-full text-left">
+              {/* Titlu Mare cu Fontul CF Moto (font-display, italic, black) */}
+              <h3 className="text-3xl sm:text-4xl font-black font-display italic tracking-[0.05em] text-white uppercase mb-12 w-full text-center drop-shadow-lg">
                 Acțiuni Rapide
               </h3>
 
@@ -704,7 +711,7 @@ export default function App() {
               id="sticky-call-btn"
             >
               <Phone className="w-5 h-5 fill-black" stroke="black" strokeWidth="1" />
-              <span>Rezervă Acum: 0731 441 122</span>
+              <span>Rezervă Acum: 0774 528 684</span>
             </a>
           </div>
 
