@@ -1,13 +1,74 @@
 <!doctype html>
-<html lang="en">
+<html lang="ro">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ATV Comana Închiriere</title>
+    
+    <!-- SEO de Bază -->
+    <title>Închirieri ATV Comana | Aventură Off-Road Lângă București</title>
+    <meta name="description" content="Închirieri ATV-uri premium în Comana, Giurgiu. Trasee off-road spectaculoase prin pădure, noroi și natură, la doar 40 de minute de București. Echipament inclus." />
+    <meta name="keywords" content="inchirieri atv, atv comana, inchiriere atv bucuresti, trasee atv, off-road comana, parcul natural comana, plimbari atv, giurgiu" />
+    <meta name="author" content="ATV Comana Prestige" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Local SEO (Geo Tags) - Îi spune lui Google unde ești pe hartă -->
+    <meta name="geo.region" content="RO-GR" /> <!-- România, Județul Giurgiu -->
+    <meta name="geo.placename" content="Comana" />
+    <meta name="geo.position" content="44.170668;26.136867" />
+    <meta name="ICBM" content="44.170668, 26.136867" />
+
+    <!-- Open Graph (Cum apare link-ul pe Facebook, WhatsApp, Instagram) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://atvcomana.ro/" />
+    <meta property="og:title" content="Închirieri ATV Comana | Aventură Off-Road" />
+    <meta property="og:description" content="Închirieri ATV-uri premium în Comana. Trasee spectaculoase prin pădure și noroi, la doar 40 min de București." />
+    <!-- Aici vom pune link-ul către o poză, ca să apară frumos când dai share -->
+    <meta property="og:image" content="https://atvcomana.ro/og-image.jpg" />
+
+    <!-- Setări pentru PWA / Mobile App Look -->
+    <meta name="theme-color" content="#020202" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <!-- GEO & SEO Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoRental",
+      "name": "ATV Comana Prestige",
+      "image": "https://atvcomana.ro/og-image.jpg",
+      "@id": "https://atvcomana.ro/",
+      "url": "https://atvcomana.ro/",
+      "telephone": "+40731441122",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Parcul Natural Comana",
+        "addressLocality": "Comana",
+        "addressRegion": "Giurgiu",
+        "postalCode": "087055",
+        "addressCountry": "RO"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 44.170668,
+        "longitude": 26.136867
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        "opens": "09:00",
+        "closes": "20:00"
+      },
+      "description": "Centru premium de închirieri ATV în Comana, Giurgiu. Oferim trasee off-road ghidate, echipament complet de protecție și modele noi CFMOTO la doar 40 de minute de București."
+    }
+    </script>
+
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

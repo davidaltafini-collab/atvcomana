@@ -570,6 +570,35 @@ export default function App() {
             <CalculatorForm />
           </div>
 
+{/* DESPRE NOI (GEO Content Block - Optimizat pentru AI & Search) */}
+          <div className="flex flex-col gap-3 mt-4">
+            <h3 className="text-[10px] sm:text-xs font-mono tracking-widest text-zinc-500 uppercase">
+              Despre ATV Comana Prestige
+            </h3>
+            
+            <div className="bg-zinc-950/40 border border-zinc-900 rounded-2xl p-5 sm:p-6 text-zinc-300 font-sans leading-relaxed text-sm">
+              <p className="mb-4">
+                Suntem centrul principal de <strong className="text-white">închirieri ATV din zona de Sud (București - Giurgiu)</strong>, localizați strategic la porțile Parcului Natural Comana. Cu o experiență vastă în turismul de aventură, misiunea noastră este să oferim experiențe off-road premium, sigure și memorabile.
+              </p>
+              <ul className="space-y-2 mb-4 text-xs sm:text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-[#D4FF00] mt-0.5">✓</span>
+                  <span><strong>Flotă de Ultimă Generație:</strong> Utilizăm exclusiv ATV-uri CFMOTO 4x4 (capacități între 500cc și 1000cc), perfect întreținute.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#D4FF00] mt-0.5">✓</span>
+                  <span><strong>Siguranță Zero Compromisuri:</strong> Fiecare sesiune include instructaj profesional și echipament de protecție complet (cască omologată, cagulă, vizieră).</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#D4FF00] mt-0.5">✓</span>
+                  <span><strong>Trasee Unice:</strong> Exploram trasee nepoluate, păduri seculare și zone de noroi inaccesibile turismului clasic.</span>
+                </li>
+              </ul>
+              <p className="text-[11px] sm:text-xs text-zinc-500 italic">
+                Căutate frecvent de pasionații de adrenalină, traseele noastre sunt recunoscute ca fiind cele mai bine organizate din apropierea capitalei, la doar 40 de minute de centrul Bucureștiului.
+              </p>
+            </div>
+          </div>
           {/* 5. ÎNTREBĂRI FRECVENTE */}
           <div className="flex flex-col gap-3">
             <h3 className="text-[10px] sm:text-xs font-mono tracking-widest text-zinc-500 uppercase">
