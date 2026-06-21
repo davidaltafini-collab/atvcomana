@@ -457,7 +457,7 @@ function MainPage() {
               max="8"
               value={reservationAtvsCount}
               onChange={(e) => { setReservationAtvsCount(parseInt(e.target.value)); haptic("light"); }}
-              className="w-full h-2 bg-zinc-900 rounded-lg appearance-none cursor-pointer accent-[#D4FF00]"
+              className="apple-slider"
             />
           </div>
 
@@ -472,7 +472,7 @@ function MainPage() {
               max="8"
               value={reservationDuration}
               onChange={(e) => { setReservationDuration(parseInt(e.target.value)); haptic("light"); }}
-              className="w-full h-2 bg-zinc-900 rounded-lg appearance-none cursor-pointer accent-[#D4FF00]"
+              className="apple-slider"
             />
           </div>
         </div>
@@ -484,7 +484,7 @@ function MainPage() {
               type="date"
               value={reservationDate}
               onChange={(e) => { setReservationDate(e.target.value); haptic("medium"); }}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-2 h-[48px] text-[11px] sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark] transition-transform duration-150 active:scale-[1.02]"
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-12 text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark] transition-transform duration-150 active:scale-[1.02] m-0 box-border"
             />
           </div>
 
@@ -493,7 +493,7 @@ function MainPage() {
             <select
               value={reservationTime}
               onChange={(e) => { setReservationTime(e.target.value); haptic("medium"); }}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-2 h-[48px] text-[11px] sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.02]"
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-12 text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.02] m-0 box-border [color-scheme:dark]"
             >
               <option value="09:00">09:00</option>
               <option value="11:00">11:00</option>
