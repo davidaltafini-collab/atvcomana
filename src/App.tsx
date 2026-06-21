@@ -32,8 +32,8 @@ const SITE_CONFIG = {
     distance: "40 MIN din Bucureşti",
     wazeLink: "https://waze.com/ul?ll=44.170668,26.136867&navigate=yes",
     googleMapsLink: "https://www.google.com/maps/search/?api=1&query=44.170668,26.136867",
-    // Embed curat pentru fundalul interactiv:
-    googleMapsEmbed: "https://maps.google.com/maps?q=44.170668,26.136867&z=15&output=embed"
+    // Embed curat. Am pus z=13 pentru un zoom out elegant.
+    googleMapsEmbed: "https://maps.google.com/maps?q=44.170668,26.136867&z=13&output=embed"
   }
 };
 
@@ -145,7 +145,7 @@ export default function App() {
   const [selectedAtv, setSelectedAtv] = useState<string>("cfmoto-520");
   const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
   
-  // Scroll visibility state for Navbar (Funcționează pe fereastra browserului acum)
+  // Scroll visibility state for Navbar 
   const [isNavbarVisible, setIsNavbarVisible] = useState<boolean>(true);
   const [lastScrollY, setLastScrollY] = useState<number>(0);
   
@@ -205,21 +205,150 @@ export default function App() {
     return `https://wa.me/${SITE_CONFIG.contact.whatsapp}?text=${encodeURIComponent(message)}`;
   };
 
+  // ==========================================
+  // COMPONENTĂ REUTILIZABILĂ PENTRU CALCULATOR
+  // O definim o singură dată și o randăm inteligent (pe mobil sau desktop)
+  // ==========================================
+  const CalculatorForm = () => (
+    <div className="bg-zinc-950 border border-[#D4FF00]/20 rounded-2xl p-5 sm:p-6 shadow-xl relative w-full">
+      <div className="flex items-center gap-2 mb-5">
+        <Sliders className="w-5 h-5 text-[#D4FF00]" />
+        <h4 className="text-sm sm:text-base font-black uppercase text-white font-display italic tracking-wide">
+          Calculator Tarif & Rezervare
+        </h4>
+      </div>
+
+      <div className="space-y-5">
+        <div>
+          <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Model ATV Selectat</label>
+          <select 
+            value={selectedAtv}
+            onChange={(e) => setSelectedAtv(e.target.value)}
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 min-h-[44px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer"
+          >
+            {FLEET_DATA.map(atv => (
+              <option key={atv.id} value={atv.id}>{atv.name} ({atv.pricePerHour} RON/h)</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 flex justify-between mb-2">
+              <span>Cantitate</span>
+              <strong className="text-white text-[12px] sm:text-sm">{reservationAtvsCount} ATV</strong>
+            </label>
+            <input 
+              type="range" 
+              min="1" 
+              max="8" 
+              value={reservationAtvsCount}
+              onChange={(e) => setReservationAtvsCount(parseInt(e.target.value))}
+              className="w-full h-1.5 bg-zinc-900 rounded-lg appearance-none cursor-pointer accent-[#D4FF00]"
+            />
+          </div>
+
+          <div>
+            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 flex justify-between mb-2">
+              <span>Durată</span>
+              <strong className="text-[#D4FF00] text-[12px] sm:text-sm">{reservationDuration} Ore</strong>
+            </label>
+            <input 
+              type="range" 
+              min="1" 
+              max="8" 
+              value={reservationDuration}
+              onChange={(e) => setReservationDuration(parseInt(e.target.value))}
+              className="w-full h-1.5 bg-zinc-900 rounded-lg appearance-none cursor-pointer accent-[#D4FF00]"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Dată Traseu</label>
+            {/* Input Data Reparat - Forțează dark mode și înălțime uniformă */}
+            <input 
+              type="date" 
+              value={reservationDate}
+              onChange={(e) => setReservationDate(e.target.value)}
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 min-h-[44px] block text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark]"
+            />
+          </div>
+
+          <div>
+            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Ora Plecării</label>
+            <select 
+              value={reservationTime}
+              onChange={(e) => setReservationTime(e.target.value)}
+              className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 min-h-[44px] block text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer"
+            >
+              <option value="09:00">09:00 (Răsărit)</option>
+              <option value="11:00">11:00 (Dimineaţă)</option>
+              <option value="13:00">13:00 (Prânz)</option>
+              <option value="15:00">15:00 (Durează mult)</option>
+              <option value="17:00">17:00 (Apus de vis)</option>
+              <option value="19:00">19:00 (Tombă de seară)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Numele Tău (Opțional)</label>
+          <input 
+            type="text" 
+            placeholder="Ex: Andrei Popescu"
+            value={reservationName}
+            onChange={(e) => setReservationName(e.target.value)}
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 min-h-[44px] block text-xs sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#D4FF00] font-mono"
+          />
+        </div>
+
+        <div className="bg-[#121212] rounded-xl p-4 border border-zinc-900 flex justify-between items-center mt-2">
+          <div>
+            <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase font-mono">Calcul Estimativ</div>
+            <div className="text-[10px] sm:text-xs text-zinc-300 font-space mt-1">{reservationAtvsCount} ATV x {reservationDuration} ore</div>
+          </div>
+          <div className="text-right">
+            <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase font-mono">Total de Plată</div>
+            <div className="text-xl sm:text-2xl font-black font-display text-[#D4FF00] mt-1">
+              {totalPrice} RON
+            </div>
+          </div>
+        </div>
+
+        <a 
+          href={getWhatsAppLink()}
+          target="_blank" 
+          rel="noreferrer"
+          className="w-full inline-flex items-center justify-center gap-2 py-4 bg-emerald-500 hover:bg-emerald-600 text-black font-extrabold uppercase text-xs sm:text-sm rounded-xl transition-all duration-200 shadow-lg active:scale-[0.98] cursor-pointer"
+        >
+          <MessageSquare className="w-4 h-4 fill-black/10" />
+          Trimite Rezervarea pe WhatsApp
+        </a>
+
+        <div className="text-center text-[9px] sm:text-[10px] text-zinc-500 font-mono italic">
+          *Preţurile includ tot echipamentul, ghidul şi instructajul. Fără costuri ascunse.
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen w-full bg-[#020202] text-white font-sans overflow-x-hidden relative pb-28">
       
-      {/* Background Effects (Valabile pe tot ecranul) */}
+      {/* Background Effects */}
       <div className="fixed inset-0 pointer-events-none opacity-20 bg-[linear-gradient(rgba(18,18,18,0.73)_1px,transparent_1px),linear-gradient(90deg,rgba(18,18,18,0.73)_1px,transparent_1px)] bg-[size:24px_24px] z-0"></div>
       <div className="absolute top-[5%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[#D4FF00] rounded-full blur-[280px] opacity-10 pointer-events-none z-0"></div>
 
-      {/* FROSTED GLASS NAVBAR (Smart Sticky - apare inteligent pe scroll) */}
+      {/* FROSTED GLASS NAVBAR */}
       <div className={`fixed z-50 w-max left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg flex items-center justify-center transition-all duration-500 ${isNavbarVisible ? 'top-6 opacity-100' : '-top-20 opacity-0 pointer-events-none'}`}>
         <span className="text-white font-bold tracking-wider text-sm drop-shadow-[0_0_8px_#D4FF00]">
           {SITE_CONFIG.brand.handle}
         </span>
       </div>
 
-      {/* HERO / QUICK ACTIONS SECTION (Ocupă inteligent partea de sus pe orice ecran) */}
+      {/* HERO / QUICK ACTIONS SECTION */}
       <div className="w-full flex flex-col items-center justify-center pt-32 pb-16 border-b border-zinc-900/50 relative z-20 px-6 [-webkit-tap-highlight-color:transparent]">
         <h3 className="text-3xl sm:text-5xl font-black font-display italic tracking-[0.05em] text-white uppercase mb-12 sm:mb-16 w-full text-center drop-shadow-lg">
           Acțiuni Rapide
@@ -267,13 +396,13 @@ export default function App() {
         </div>
       </div>
 
-      {/* MAIN CONTENT GRID (Responsive: 1 coloană telefon, 2 coloane desktop) */}
+      {/* MAIN CONTENT GRID */}
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 flex flex-col lg:flex-row gap-8 lg:gap-12 relative z-20">
         
-        {/* COLOANA STÂNGA (Flotă, Trasee, FAQ) */}
-        <div className="flex-1 space-y-8">
+        {/* COLOANA STÂNGA (Conținutul curge fluid pe mobil) */}
+        <div className="flex-1 flex flex-col gap-8">
           
-          {/* INTERACTIVE FLEET SELECTION SLIDER */}
+          {/* 1. ALEGE ATV */}
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-baseline">
               <h3 className="text-[10px] sm:text-xs font-mono tracking-widest text-zinc-500 uppercase">
@@ -342,7 +471,62 @@ export default function App() {
             </div>
           </div>
 
-          {/* TRASEE OFF-ROAD */}
+          {/* 2. HARTA (Vine IMEDIAT după motor, exact cum ai cerut) */}
+          <div className="flex flex-col gap-3">
+            <h3 className="text-[10px] sm:text-xs font-mono tracking-widest text-zinc-500 uppercase">
+              Locaţia Traseului în Comana
+            </h3>
+
+            <div className="bg-white/5 backdrop-blur-md border border-[#D4FF00]/20 rounded-2xl overflow-hidden shadow-xl p-2 relative">
+              <div className="flex justify-between items-center px-3 py-2.5 text-[11px] sm:text-xs font-space text-zinc-300">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-[#D4FF00]" />
+                  <span className="font-semibold">{SITE_CONFIG.location.name}</span>
+                </div>
+                <span className="text-[9px] sm:text-[10px] text-[#D4FF00] font-mono uppercase bg-[#D4FF00]/10 px-2 py-1 rounded">
+                  {SITE_CONFIG.location.distance}
+                </span>
+              </div>
+
+              {/* Harta Interactivă care te aruncă în Google Maps - Pin Verde Fix pe Mijloc */}
+              <a 
+                href={SITE_CONFIG.location.googleMapsLink}
+                target="_blank" 
+                rel="noreferrer" 
+                className="relative w-full aspect-[16/10] sm:aspect-video rounded-xl overflow-hidden border border-zinc-900 block group"
+              >
+                {/* Pinul Personalizat Verde - stă PERFECT în mijlocul containerului */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 drop-shadow-[0_0_15px_rgba(212,255,0,0.8)] pointer-events-none">
+                  <MapPin className="w-10 h-10 text-[#D4FF00] fill-black/50" />
+                </div>
+
+                {/* Iframe-ul este mărit la 150% pentru a ascunde textele Google */}
+                <iframe 
+                  src={SITE_CONFIG.location.googleMapsEmbed}
+                  style={{ border: 0 }} 
+                  allowFullScreen={true} 
+                  loading="lazy" 
+                  referrerPolicy="no-referrer"
+                  title="Harta Inchiriere ATV Comana"
+                  className="absolute top-1/2 left-1/2 w-[150%] h-[150%] -translate-x-1/2 -translate-y-1/2 grayscale contrast-[1.2] brightness-[0.7] transition-all duration-300 pointer-events-none group-hover:brightness-[0.8] group-hover:grayscale-0"
+                ></iframe>
+              </a>
+
+              <div className="pt-3 pb-1.5 px-2 flex justify-between items-center text-[9px] sm:text-[10px] text-zinc-500 font-mono bg-zinc-950 rounded-b-xl">
+                <span>*Apasă pe hartă pentru a deschide Google Maps</span>
+                <a 
+                  href={SITE_CONFIG.location.wazeLink}
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="text-[#D4FF00] uppercase font-bold hover:underline flex items-center gap-1.5"
+                >
+                  Deschide Waze <Navigation className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. TRASEE OFF-ROAD */}
           <div className="flex flex-col gap-4">
             <h3 className="text-[10px] sm:text-xs font-mono tracking-widest text-zinc-500 uppercase">
               Trasee Off-Road Disponibile
@@ -381,7 +565,12 @@ export default function App() {
             </div>
           </div>
 
-          {/* ÎNTREBĂRI FRECVENTE */}
+          {/* 4. CALCULATOR (Apare aici doar pe Mobile, pentru flow perfect) */}
+          <div className="block lg:hidden mt-2">
+            <CalculatorForm />
+          </div>
+
+          {/* 5. ÎNTREBĂRI FRECVENTE */}
           <div className="flex flex-col gap-3">
             <h3 className="text-[10px] sm:text-xs font-mono tracking-widest text-zinc-500 uppercase">
               Întrebări Frecvente
@@ -424,188 +613,10 @@ export default function App() {
 
         </div>
 
-        {/* COLOANA DREAPTĂ (Calculator + Hartă, Sticky pe Desktop) */}
-        <div className="w-full lg:w-[420px] xl:w-[480px] shrink-0 space-y-8 relative">
-          <div className="lg:sticky lg:top-24 space-y-8">
-            
-            {/* CALCULATOR REZERVARE */}
-            <div className="bg-zinc-950 border border-[#D4FF00]/20 rounded-2xl p-5 sm:p-6 shadow-xl relative">
-              <div className="flex items-center gap-2 mb-4">
-                <Sliders className="w-5 h-5 text-[#D4FF00]" />
-                <h4 className="text-sm sm:text-base font-black uppercase text-white font-display italic tracking-wide">
-                  Calculator Tarif & Rezervare
-                </h4>
-              </div>
-
-              <div className="space-y-5">
-                <div>
-                  <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Model ATV Selectat</label>
-                  <select 
-                    value={selectedAtv}
-                    onChange={(e) => setSelectedAtv(e.target.value)}
-                    className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer"
-                  >
-                    {FLEET_DATA.map(atv => (
-                      <option key={atv.id} value={atv.id}>{atv.name} ({atv.pricePerHour} RON/h)</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 flex justify-between mb-2">
-                      <span>Cantitate</span>
-                      <strong className="text-white text-[12px] sm:text-sm">{reservationAtvsCount} ATV</strong>
-                    </label>
-                    <input 
-                      type="range" 
-                      min="1" 
-                      max="8" 
-                      value={reservationAtvsCount}
-                      onChange={(e) => setReservationAtvsCount(parseInt(e.target.value))}
-                      className="w-full h-1.5 bg-zinc-900 rounded-lg appearance-none cursor-pointer accent-[#D4FF00]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 flex justify-between mb-2">
-                      <span>Durată</span>
-                      <strong className="text-[#D4FF00] text-[12px] sm:text-sm">{reservationDuration} Ore</strong>
-                    </label>
-                    <input 
-                      type="range" 
-                      min="1" 
-                      max="8" 
-                      value={reservationDuration}
-                      onChange={(e) => setReservationDuration(parseInt(e.target.value))}
-                      className="w-full h-1.5 bg-zinc-900 rounded-lg appearance-none cursor-pointer accent-[#D4FF00]"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Dată Traseu</label>
-                    <input 
-                      type="date" 
-                      value={reservationDate}
-                      onChange={(e) => setReservationDate(e.target.value)}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Ora Plecării</label>
-                    <select 
-                      value={reservationTime}
-                      onChange={(e) => setReservationTime(e.target.value)}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer"
-                    >
-                      <option value="09:00">09:00 (Răsărit)</option>
-                      <option value="11:00">11:00 (Dimineaţă)</option>
-                      <option value="13:00">13:00 (Prânz)</option>
-                      <option value="15:00">15:00 (Durează mult)</option>
-                      <option value="17:00">17:00 (Apus de vis)</option>
-                      <option value="19:00">19:00 (Tombă de seară)</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-1.5">Numele Tău (Opțional)</label>
-                  <input 
-                    type="text" 
-                    placeholder="Ex: Andrei Popescu"
-                    value={reservationName}
-                    onChange={(e) => setReservationName(e.target.value)}
-                    className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-xs sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#D4FF00] font-mono"
-                  />
-                </div>
-
-                <div className="bg-[#121212] rounded-xl p-4 border border-zinc-900 flex justify-between items-center mt-2">
-                  <div>
-                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase font-mono">Calcul Estimativ</div>
-                    <div className="text-[10px] sm:text-xs text-zinc-300 font-space mt-1">{reservationAtvsCount} ATV x {reservationDuration} ore</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-[9px] sm:text-[10px] text-zinc-500 uppercase font-mono">Total de Plată</div>
-                    <div className="text-xl sm:text-2xl font-black font-display text-[#D4FF00] mt-1">
-                      {totalPrice} RON
-                    </div>
-                  </div>
-                </div>
-
-                <a 
-                  href={getWhatsAppLink()}
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-black font-extrabold uppercase text-xs sm:text-sm rounded-xl transition-all duration-200 shadow-lg active:scale-[0.98] cursor-pointer"
-                >
-                  <MessageSquare className="w-4 h-4 fill-black/10" />
-                  Trimite Rezervarea pe WhatsApp
-                </a>
-
-                <div className="text-center text-[9px] sm:text-[10px] text-zinc-500 font-mono italic">
-                  *Preţurile includ tot echipamentul, ghidul şi instructajul. Fără costuri ascunse.
-                </div>
-              </div>
-            </div>
-
-            {/* INTEGRATED GOOGLE MAP */}
-            <div className="flex flex-col gap-3">
-              <h3 className="text-[10px] sm:text-xs font-mono tracking-widest text-zinc-500 uppercase">
-                Locaţia Traseului în Comana
-              </h3>
-
-              <div className="bg-white/5 backdrop-blur-md border border-[#D4FF00]/20 rounded-2xl overflow-hidden shadow-xl p-2 relative group">
-                <div className="flex justify-between items-center px-3 py-2.5 text-[11px] sm:text-xs font-space text-zinc-300">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-[#D4FF00]" />
-                    <span className="font-semibold">{SITE_CONFIG.location.name}</span>
-                  </div>
-                  <span className="text-[9px] sm:text-[10px] text-[#D4FF00] font-mono uppercase bg-[#D4FF00]/10 px-2 py-1 rounded">
-                    {SITE_CONFIG.location.distance}
-                  </span>
-                </div>
-
-                {/* Harta e acum un Buton Google Maps (Cu UI-ul alb ascuns in afara containerului) */}
-                <a 
-                  href={SITE_CONFIG.location.googleMapsLink}
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="relative w-full aspect-[16/10] sm:aspect-video rounded-xl overflow-hidden border border-zinc-900 block group"
-                >
-                  <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 group-hover:bg-transparent transition-colors">
-                    <div className="bg-black/60 backdrop-blur-sm px-4 py-2 rounded-lg text-[10px] sm:text-xs text-white font-mono tracking-widest uppercase border border-white/10 shadow-lg opacity-90 group-hover:opacity-0 transition-opacity">
-                      Deschide în Google Maps
-                    </div>
-                  </div>
-                  {/* Iframe-ul este mărit la 150% pentru a ascunde butoanele și textele implicite Google */}
-                  <iframe 
-                    src={SITE_CONFIG.location.googleMapsEmbed}
-                    style={{ border: 0 }} 
-                    allowFullScreen={true} 
-                    loading="lazy" 
-                    referrerPolicy="no-referrer"
-                    title="Harta Inchiriere ATV Comana"
-                    className="absolute top-1/2 left-1/2 w-[150%] h-[150%] -translate-x-1/2 -translate-y-1/2 grayscale contrast-[1.3] brightness-[0.7] transition-all duration-300 pointer-events-none"
-                  ></iframe>
-                </a>
-
-                <div className="pt-3 pb-1.5 px-2 flex justify-between items-center text-[9px] sm:text-[10px] text-zinc-500 font-mono bg-zinc-950 rounded-b-xl">
-                  <span>*Aproape de parcul de aventură</span>
-                  <a 
-                    href={SITE_CONFIG.location.wazeLink}
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="text-[#D4FF00] uppercase font-bold hover:underline flex items-center gap-1.5"
-                  >
-                    Navigație Waze <Navigation className="w-3 h-3" />
-                  </a>
-                </div>
-              </div>
-            </div>
-
+        {/* COLOANA DREAPTĂ (Calculatorul stă fixat aici pe Desktop) */}
+        <div className="hidden lg:block w-[420px] xl:w-[480px] shrink-0">
+          <div className="sticky top-24">
+            <CalculatorForm />
           </div>
         </div>
 
@@ -622,11 +633,11 @@ export default function App() {
         </p>
       </div>
 
-      {/* STICKY FLOATING CALL ACTION BUTTON (ROTUND) */}
+      {/* STICKY FLOATING CALL ACTION BUTTON (Acum are iar animate-pulse-glow si e rotund complet) */}
       <div className="fixed bottom-5 left-1/2 -translate-x-1/2 w-full max-w-[340px] px-4 flex justify-center z-50 pointer-events-auto">
         <a 
           href={`tel:${SITE_CONFIG.contact.phoneRaw}`}
-          className="w-full bg-[#D4FF00] py-4 rounded-full flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(212,255,0,0.5)] active:scale-95 transition-transform text-black font-black uppercase text-sm tracking-tighter"
+          className="w-full bg-[#D4FF00] py-4 rounded-full flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(212,255,0,0.5)] active:scale-95 transition-transform animate-pulse-glow text-black font-black uppercase text-sm tracking-tighter"
         >
           <Phone className="w-5 h-5 fill-black" stroke="black" strokeWidth="1" />
           <span>Rezervă Acum: {SITE_CONFIG.contact.phoneDisplay}</span>
