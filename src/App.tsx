@@ -29,9 +29,9 @@ const SITE_CONFIG = {
   location: {
     name: "Centru Comana, Giurgiu",
     distance: "40 MIN din Bucureşti",
-    wazeLink: "https://waze.com/ul?ll=44.170668,26.136867&navigate=yes",
+    wazeLink: "https://waze.com/ul/hsxfe6cq1u",
     googleMapsLink: "https://maps.app.goo.gl/FRWBu3G4HoQAUCHk6?g_st=ic",
-    googleMapsEmbed: "https://maps.google.com/maps?q=44.170668,26.136867&z=13&output=embed"
+    googleMapsEmbed: "https://maps.google.com/maps?q=44.1722096,26.1448971&z=15&output=embed"
   }
 };
 
@@ -484,7 +484,7 @@ function MainPage() {
               type="date"
               value={reservationDate}
               onChange={(e) => { setReservationDate(e.target.value); haptic("medium"); }}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-12 text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark] transition-transform duration-150 active:scale-[1.02] m-0 box-border"
+              className="w-full appearance-none h-[48px] bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-0 m-0 box-border text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark] transition-transform duration-150 active:scale-[1.02]"
             />
           </div>
 
@@ -493,7 +493,7 @@ function MainPage() {
             <select
               value={reservationTime}
               onChange={(e) => { setReservationTime(e.target.value); haptic("medium"); }}
-              className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-12 text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.02] m-0 box-border [color-scheme:dark]"
+              className="w-full appearance-none h-[48px] bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-0 m-0 box-border text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.02] [color-scheme:dark]"
             >
               <option value="09:00">09:00</option>
               <option value="11:00">11:00</option>
