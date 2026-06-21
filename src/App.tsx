@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { 
-  MapPin, 
-  Phone, 
-  ChevronDown, 
-  ChevronUp, 
-  Sliders, 
-  Navigation,
+import {
+  MapPin,
+  Phone,
+  ChevronDown,
+  ChevronUp,
+  Sliders,
   MessageSquare
 } from "lucide-react";
 
@@ -31,7 +30,7 @@ const SITE_CONFIG = {
     distance: "40 MIN din Bucureşti",
     wazeLink: "https://waze.com/ul/hsxfe6cq1u",
     googleMapsLink: "https://maps.app.goo.gl/FRWBu3G4HoQAUCHk6?g_st=ic",
-    googleMapsEmbed: "https://maps.google.com/maps?q=44.1722096,26.1448971&z=15&output=embed"
+    googleMapsEmbed: "https://maps.google.com/maps?q=44.1722096,26.1448971&z=16&output=embed"
   }
 };
 
@@ -82,24 +81,24 @@ interface Trail {
 
 const TRAILS: Trail[] = [
   {
-    name: "Traseul Verde: Inima Pădurii Comana",
+    name: "Traseul Verde: Câmpuri şi Cărări",
     difficulty: "Uşor",
     time: "1 - 1.5 Ore",
-    description: "Traseu pitoresc prin parcul natural, ideal pentru începători şi familii. Drumuri forestiere curate cu peisaje superbe.",
+    description: "Traseu pitoresc prin câmpurile din zona Comana, ideal pentru începători şi familii. Drumuri de ţară curate cu peisaje superbe.",
     tag: "Recomandat Debut"
   },
   {
     name: "Traseul Muddy Challenge: Aventură în Noroi",
     difficulty: "Mediu",
     time: "2 Ore",
-    description: "Provocări cu treceri prin apă, şanţuri cu noroi şi pante medii. Perfect pentru pasionaţii de adrenalină controlată.",
+    description: "Provocări cu treceri prin apă, şanţuri cu noroi şi pante medii pe terenuri off-road. Perfect pentru pasionaţii de adrenalină controlată.",
     tag: "Cel mai Căutat"
   },
   {
     name: "Traseul Delta Extrem: Neajlov Outlaw",
     difficulty: "Extrem",
     time: "3+ Ore",
-    description: "Traseu complet de anduranţă cu treceri tehnice prin porţiuni mlaştinoase, pante abrupte şi zone de noroi adânc.",
+    description: "Traseu complet de anduranţă cu treceri tehnice prin porţiuni mlaştinoase, pante abrupte şi zone de noroi adânc pe terenul off-road.",
     tag: "Doar pentru Veterani"
   }
 ];
@@ -447,33 +446,37 @@ function MainPage() {
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 flex justify-between mb-2">
-              <span>Cantitate</span>
-              <strong className="text-white text-[12px] sm:text-sm">{reservationAtvsCount} ATV</strong>
-            </label>
-            <input
-              type="range"
-              min="1"
-              max="8"
-              value={reservationAtvsCount}
-              onChange={(e) => { setReservationAtvsCount(parseInt(e.target.value)); haptic("light"); }}
-              className="apple-slider"
-            />
+            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-2">Cantitate</label>
+            <div className="flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-xl h-12 px-1">
+              <button
+                type="button"
+                onClick={() => { setReservationAtvsCount(Math.max(1, reservationAtvsCount - 1)); haptic("light"); }}
+                className="w-10 h-10 flex items-center justify-center text-xl font-bold text-zinc-400 active:scale-90 transition-transform rounded-lg active:bg-zinc-800 cursor-pointer select-none"
+              >−</button>
+              <span className="text-white font-bold font-space text-sm">{reservationAtvsCount} ATV</span>
+              <button
+                type="button"
+                onClick={() => { setReservationAtvsCount(Math.min(8, reservationAtvsCount + 1)); haptic("light"); }}
+                className="w-10 h-10 flex items-center justify-center text-xl font-bold text-[#D4FF00] active:scale-90 transition-transform rounded-lg active:bg-zinc-800 cursor-pointer select-none"
+              >+</button>
+            </div>
           </div>
 
           <div>
-            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 flex justify-between mb-2">
-              <span>Durată</span>
-              <strong className="text-[#D4FF00] text-[12px] sm:text-sm">{reservationDuration} Ore</strong>
-            </label>
-            <input
-              type="range"
-              min="1"
-              max="8"
-              value={reservationDuration}
-              onChange={(e) => { setReservationDuration(parseInt(e.target.value)); haptic("light"); }}
-              className="apple-slider"
-            />
+            <label className="text-[10px] sm:text-xs uppercase font-mono text-zinc-400 block mb-2">Durată</label>
+            <div className="flex items-center justify-between bg-zinc-900 border border-zinc-800 rounded-xl h-12 px-1">
+              <button
+                type="button"
+                onClick={() => { setReservationDuration(Math.max(1, reservationDuration - 1)); haptic("light"); }}
+                className="w-10 h-10 flex items-center justify-center text-xl font-bold text-zinc-400 active:scale-90 transition-transform rounded-lg active:bg-zinc-800 cursor-pointer select-none"
+              >−</button>
+              <span className="text-[#D4FF00] font-bold font-space text-sm">{reservationDuration} Ore</span>
+              <button
+                type="button"
+                onClick={() => { setReservationDuration(Math.min(8, reservationDuration + 1)); haptic("light"); }}
+                className="w-10 h-10 flex items-center justify-center text-xl font-bold text-[#D4FF00] active:scale-90 transition-transform rounded-lg active:bg-zinc-800 cursor-pointer select-none"
+              >+</button>
+            </div>
           </div>
         </div>
 
@@ -701,35 +704,29 @@ function MainPage() {
                 </span>
               </div>
 
-              {/* Harta Interactivă care te aruncă în Google Maps - Pin Verde Fix pe Mijloc */}
-              <a 
+              <a
                 href={SITE_CONFIG.location.googleMapsLink}
-                target="_blank" 
-                rel="noreferrer" 
+                target="_blank"
+                rel="noreferrer"
                 className="relative w-full aspect-[16/10] sm:aspect-video rounded-xl overflow-hidden border border-zinc-900 block group"
               >
-                {/* Pinul Personalizat Verde - stă PERFECT în mijlocul containerului */}
-                <div className="absolute top-[47.5%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 drop-shadow-[0_0_15px_rgba(212,255,0,0.8)] pointer-events-none">
-                  <MapPin className="w-10 h-10 text-[#D4FF00] fill-black/50" />
-                </div>
-
-                {/* Iframe-ul este mărit la 150% pentru a ascunde textele Google - lazy loaded */}
                 <LazyIframe
                   src={SITE_CONFIG.location.googleMapsEmbed}
                   title="Harta Inchiriere ATV Comana"
-                  className="absolute top-1/2 left-1/2 w-[150%] h-[150%] -translate-x-1/2 -translate-y-1/2 grayscale contrast-[1.2] brightness-[0.7] transition-all duration-300 pointer-events-none group-hover:brightness-[0.8] group-hover:grayscale-0"
+                  className="absolute inset-0 w-full h-full grayscale contrast-[1.2] brightness-[0.7] transition-all duration-300 pointer-events-none group-hover:brightness-[0.8] group-hover:grayscale-0"
                 />
               </a>
 
               <div className="pt-3 pb-1.5 px-2 flex justify-between items-center text-[9px] sm:text-[10px] text-zinc-500 font-mono bg-zinc-950 rounded-b-xl">
-                <span>*Apasă pe hartă pentru a deschide Google Maps</span>
-                <a 
+                <span>*Apasă pe hartă pentru Google Maps</span>
+                <a
                   href={SITE_CONFIG.location.wazeLink}
-                  target="_blank" 
+                  target="_blank"
                   rel="noreferrer"
-                  className="text-[#D4FF00] uppercase font-bold hover:underline flex items-center gap-1.5"
+                  className="flex items-center gap-1.5 active:scale-95 transition-transform"
                 >
-                  Deschide Waze <Navigation className="w-3 h-3" />
+                  <img src="/waze.png" alt="Waze" className="w-5 h-5 rounded" />
+                  <span className="text-[#D4FF00] uppercase font-bold text-[10px]">Waze</span>
                 </a>
               </div>
             </div>
@@ -800,7 +797,7 @@ function MainPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#D4FF00] mt-0.5">✓</span>
-                  <span><strong>Trasee Unice:</strong> Exploram trasee nepoluate, păduri seculare și zone de noroi inaccesibile turismului clasic.</span>
+                  <span><strong>Trasee Unice:</strong> Explorăm trasee nepoluate, câmpuri deschise şi zone de noroi inaccesibile turismului clasic.</span>
                 </li>
               </ul>
               <p className="text-[11px] sm:text-xs text-zinc-500 italic">
