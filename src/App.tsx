@@ -176,7 +176,7 @@ export default function App() {
     - Cost estimat: ${totalPrice} RON
     Aştept confirmarea disponibilităţii dumneavoastră. Mulţumesc!`;
     
-    return `https://wa.me/40731441122?text=${encodeURIComponent(message)}`;
+    return `https://wa.me/40774528684?text=${encodeURIComponent(message)}`;
   };
 
   return (
@@ -277,22 +277,22 @@ export default function App() {
           <div className="absolute top-0 right-0 w-[50%] h-full bg-gradient-to-l from-white/[0.02] to-transparent pointer-events-none z-40"></div>
 
           {/* MAIN SCROLLABLE CONTAINER */}
-          <div onScroll={handleScroll} className="w-full h-full bg-[#000] overflow-y-auto overflow-x-hidden flex flex-col relative pb-24 scroll-smooth">
+          <div className="w-full h-full bg-[#000] overflow-y-auto overflow-x-hidden flex flex-col relative pb-24 scroll-smooth">
             
-            {/* FROSTED GLASS NAVBAR (Apare la scroll) */}
-            <div className={`sticky top-6 z-50 w-max mx-auto px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg flex items-center justify-center transition-all duration-500 ${isScrolled ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6 pointer-events-none'}`}>
+            {/* FROSTED GLASS NAVBAR (Sticky Clasic - curge natural) */}
+            <div className="sticky top-6 z-50 w-max mx-auto px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg flex items-center justify-center mt-6 mb-2">
               <span className="text-white font-bold tracking-wider text-sm drop-shadow-[0_0_8px_#D4FF00]">
                 @atvcomana
               </span>
             </div>
 
-            {/* SOCIAL NAVIGATION & QUICK ACTIONS (Centrat, Elastic) */}
-            <div className="w-full min-h-[55vh] flex flex-col items-center justify-center pt-28 pb-12 border-b border-zinc-900/50 relative z-20 px-4 [-webkit-tap-highlight-color:transparent]">
+            {/* SOCIAL NAVIGATION & QUICK ACTIONS (Coerent, Elastic) */}
+            <div className="w-full flex flex-col items-center justify-center pt-6 pb-12 border-b border-zinc-900/50 relative z-20 px-6 [-webkit-tap-highlight-color:transparent]">
               
-              {/* Titlu Mare Deasupra */}
-              <span className="text-2xl sm:text-3xl font-black tracking-[0.1em] text-white uppercase mb-12 text-center drop-shadow-lg">
+              {/* Titlu Coerent cu restul site-ului (Aliniat stânga) */}
+              <h3 className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase mb-8 w-full text-left">
                 Acțiuni Rapide
-              </span>
+              </h3>
 
               {/* Containerul cu iconițele aruncate & trăgabile */}
               <div className="flex flex-row flex-wrap items-center justify-center gap-6 sm:gap-8 overflow-visible w-full">
@@ -319,7 +319,7 @@ export default function App() {
 
                 {/* WhatsApp */}
                 <motion.div drag dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }} dragElastic={0.5} whileTap={{ cursor: "grabbing", scale: 0.95 }} className="cursor-grab relative z-30">
-                  <a href="https://wa.me/40731441122" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none -rotate-3 mt-4 group">
+                  <a href="https://wa.me/40774528684" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 outline-none focus:outline-none -rotate-3 mt-4 group">
                     <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow duration-300 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] bg-black relative border border-white/5 pointer-events-none">
                       <img src="/whatsap.png" alt="WhatsApp" className="w-full h-full object-cover outline-none border-none" />
                     </div>
@@ -427,7 +427,19 @@ export default function App() {
                   </span>
                 </div>
 
-                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-zinc-900">
+                {/* Harta e acum un Buton Waze (blochează eroarea de 2 fingers) */}
+                <a 
+                  href="https://waze.com/ul?ll=44.170668,26.136867&navigate=yes" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-zinc-900 block group"
+                >
+                  <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/10 group-hover:bg-transparent transition-colors">
+                    {/* Badge elegant care indică acțiunea */}
+                    <div className="bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-lg text-[10px] text-white font-mono tracking-widest uppercase border border-white/10 shadow-lg opacity-90 group-hover:opacity-0 transition-opacity">
+                      Apasă pentru Navigație
+                    </div>
+                  </div>
                   <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d11531.621430032544!2d26.1368673!3d44.170668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40b1ea0da97611ab%3A0xe5a36ebd77d07996!2sComana%20Adventure%20Park!5e0!3m2!1sen!2sro!4v1700000000000!5m2!1sen!2sro" 
                     width="100%" 
@@ -437,9 +449,9 @@ export default function App() {
                     loading="lazy" 
                     referrerPolicy="no-referrer"
                     title="Harta Inchiriere ATV Comana"
-                    className="grayscale contrast-[1.3] brightness-[0.7] active:grayscale-0 active:brightness-100 transition-all duration-300 pointer-events-auto"
+                    className="grayscale contrast-[1.3] brightness-[0.7] transition-all duration-300 pointer-events-none"
                   ></iframe>
-                </div>
+                </a>
 
                 <div className="pt-2.5 pb-1 px-1 flex justify-between items-center text-[9px] text-zinc-500 font-mono bg-zinc-950">
                   <span>*Aproape de parcul de aventură</span>
@@ -687,7 +699,7 @@ export default function App() {
           {/* STICKY FLOATING CALL ACTION BUTTON CENTERED DIRECTLY */}
           <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-full max-w-[340px] px-4 flex justify-center z-50 pointer-events-auto">
             <a 
-              href="tel:0731441122"
+              href="tel:0774528684"
               className="w-full bg-[#D4FF00] py-4 rounded-2xl flex items-center justify-center gap-3 shadow-[0_0_30px_rgba(212,255,0,0.5)] active:scale-95 transition-transform animate-pulse-glow text-black font-black uppercase text-sm tracking-tighter"
               id="sticky-call-btn"
             >
