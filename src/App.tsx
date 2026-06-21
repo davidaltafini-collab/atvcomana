@@ -281,9 +281,8 @@ export default function App() {
             {/* FROSTED GLASS NAVBAR */}
             <div className="sticky top-6 z-50 mx-5 px-5 py-3.5 rounded-2xl bg-zinc-900/60 backdrop-blur-md border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.5)] flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <Flame className="w-5 h-5 text-[#D4FF00]" />
                 <span className="text-white font-black italic tracking-wider text-lg uppercase drop-shadow-md">
-                  ATV <span className="text-[#D4FF00]">COMANA</span>
+                <span className="text-[#D4FF00]">@atvcomana</span>
                 </span>
               </div>
               <div className="w-2.5 h-2.5 rounded-full bg-[#D4FF00] animate-pulse shadow-[0_0_10px_#D4FF00]"></div>
