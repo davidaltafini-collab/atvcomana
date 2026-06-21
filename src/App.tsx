@@ -279,7 +279,7 @@ export default function App() {
           <div className="w-full h-full bg-[#000] overflow-y-auto overflow-x-hidden flex flex-col relative pb-24 scroll-smooth">
             
             {/* HERO SECTION WITH IMPACT HEADINGS */}
-            <div className="relative w-full h-[270px] pt-8 pb-4 px-6 flex flex-col items-center justify-center overflow-hidden border-b border-zinc-900">
+            <div className="relative w-full min-h-[320px] pt-24 pb-4 px-6 flex flex-col items-center justify-center overflow-hidden border-b border-zinc-900">
               
               {/* Radial background gradient matching Artistic Flair precisely */}
               <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_center,_#D4FF00_0%,transparent_70%)] z-0"></div>
@@ -322,37 +322,37 @@ export default function App() {
 
             </div>
 
-           {/* SOCIAL NAVIGATION (iOS Style Apps Layout) */}
-            <div className="w-full flex flex-row flex-wrap items-start justify-center gap-x-6 gap-y-6 py-8 mt-4 overflow-visible relative z-20 px-4 [-webkit-tap-highlight-color:transparent] border-b border-zinc-900/50">
+           {/* SOCIAL NAVIGATION (Aspect "aruncat", dezordonat, cu imaginile tale) */}
+            <div className="w-full flex flex-col items-center justify-center gap-10 py-12 overflow-visible border-b border-zinc-900/50 relative z-20 [-webkit-tap-highlight-color:transparent]">
               
               {/* TikTok */}
-              <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer">
-                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] group-active:scale-95 bg-black relative">
-                  <img src="/tiktok.png" alt="TikTok" className="w-full h-full object-cover outline-none border-none" />
+              <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer -ml-28 -rotate-12">
+                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative">
+                  <img src="/tiktok.png" alt="TikTok" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
                 </div>
                 <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">TikTok</span>
               </a>
 
               {/* Instagram */}
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer">
-                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] group-active:scale-95 bg-black relative">
-                  <img src="/instagram.png" alt="Instagram" className="w-full h-full object-cover outline-none border-none" />
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer ml-28 rotate-12">
+                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative">
+                  <img src="/instagram.png" alt="Instagram" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
                 </div>
                 <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">Instagram</span>
               </a>
 
               {/* WhatsApp */}
-              <a href="https://wa.me/40731441122" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer">
-                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] group-active:scale-95 bg-black relative">
-                  <img src="/whatsap.png" alt="WhatsApp" className="w-full h-full object-cover outline-none border-none" />
+              <a href="https://wa.me/40731441122" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer -ml-20 -rotate-6 mt-2">
+                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative">
+                  <img src="/whatsap.png" alt="WhatsApp" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
                 </div>
                 <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">WhatsApp</span>
               </a>
 
               {/* Waze */}
-              <a href="https://waze.com/ul?ll=44.170668,26.136867&navigate=yes" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer">
-                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] group-active:scale-95 bg-black relative">
-                  <img src="/waze.png" alt="Waze" className="w-full h-full object-cover outline-none border-none" />
+              <a href="https://waze.com/ul?ll=44.170668,26.136867&navigate=yes" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer ml-24 rotate-6 mt-2">
+                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative">
+                  <img src="/waze.png" alt="Waze" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
                 </div>
                 <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">Waze</span>
               </a>
