@@ -261,6 +261,84 @@
         <a class="initial-call" href="tel:0731441122">Rezerv&#259; Acum: 0731 441 122</a>
       </div>
     </div>
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get("debug") !== "1") return;
+
+        var entries = [];
+        var panel;
+        var list;
+
+        function format(value) {
+          if (value instanceof Error) return value.stack || value.message;
+          if (typeof value === "object") {
+            try {
+              return JSON.stringify(value);
+            } catch (error) {
+              return String(value);
+            }
+          }
+          return String(value);
+        }
+
+        function render() {
+          if (!list) return;
+          list.innerHTML = entries.slice(-80).map(function (entry) {
+            return "<div style=\"border-top:1px solid #333;padding:4px 0;color:" + entry.color + "\"><strong>" + entry.type + "</strong> " + entry.text.replace(/[&<>]/g, function (char) {
+              return {"&": "&amp;", "<": "&lt;", ">": "&gt;"}[char];
+            }) + "</div>";
+          }).join("");
+          list.scrollTop = list.scrollHeight;
+        }
+
+        function add(type, color, args) {
+          entries.push({
+            type: type,
+            color: color,
+            text: Array.prototype.map.call(args, format).join(" ")
+          });
+          render();
+        }
+
+        function bootPanel() {
+          panel = document.createElement("div");
+          panel.style.cssText = "position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;max-height:45vh;background:rgba(0,0,0,.92);color:#fff;border:1px solid #d4ff00;border-radius:8px;font:12px/1.35 monospace;box-shadow:0 0 30px rgba(0,0,0,.5);";
+          panel.innerHTML = "<div style=\"display:flex;gap:8px;align-items:center;padding:8px;border-bottom:1px solid #333\"><strong style=\"color:#d4ff00\">Mobile Debug</strong><button type=\"button\" data-debug-clear style=\"margin-left:auto\">clear</button><button type=\"button\" data-debug-hide>hide</button></div><div data-debug-list style=\"overflow:auto;max-height:calc(45vh - 42px);padding:6px\"></div>";
+          document.body.appendChild(panel);
+          list = panel.querySelector("[data-debug-list]");
+          panel.querySelector("[data-debug-clear]").onclick = function () {
+            entries = [];
+            render();
+          };
+          panel.querySelector("[data-debug-hide]").onclick = function () {
+            panel.style.display = "none";
+          };
+          add("info", "#d4ff00", ["debug ready", navigator.userAgent]);
+        }
+
+        ["log", "warn", "error"].forEach(function (method) {
+          var original = console[method];
+          console[method] = function () {
+            add(method, method === "error" ? "#ff6b6b" : method === "warn" ? "#ffd166" : "#fff", arguments);
+            original.apply(console, arguments);
+          };
+        });
+
+        window.addEventListener("error", function (event) {
+          add("window.error", "#ff6b6b", [event.message, event.filename + ":" + event.lineno + ":" + event.colno]);
+        });
+        window.addEventListener("unhandledrejection", function (event) {
+          add("promise", "#ff6b6b", [event.reason]);
+        });
+
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", bootPanel);
+        } else {
+          bootPanel();
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
