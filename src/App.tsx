@@ -214,6 +214,11 @@ export default function App() {
   const mapRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (showMap) return;
+    if (!("IntersectionObserver" in window)) {
+      setShowMap(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setShowMap(true); observer.disconnect(); } },
       { rootMargin: "200px" }
