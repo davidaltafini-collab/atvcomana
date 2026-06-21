@@ -278,14 +278,11 @@ export default function App() {
           {/* MAIN INTERNAL SCREEN VIEWPORT (Scrollable) */}
           <div className="w-full h-full bg-[#000] overflow-y-auto overflow-x-hidden flex flex-col relative pb-24 scroll-smooth">
             
-            {/* FROSTED GLASS NAVBAR */}
-            <div className="sticky top-6 z-50 mx-5 px-5 py-3.5 rounded-2xl bg-zinc-900/60 backdrop-blur-md border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.5)] flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <span className="text-white font-black italic tracking-wider text-lg uppercase drop-shadow-md">
-                <span className="text-[#D4FF00]">@atvcomana</span>
-                </span>
-              </div>
-              <div className="w-2.5 h-2.5 rounded-full bg-[#D4FF00] animate-pulse shadow-[0_0_10px_#D4FF00]"></div>
+            {/* FROSTED GLASS NAVBAR (Pill Centrat) */}
+            <div className="sticky top-6 z-50 w-max mx-auto px-6 py-2 rounded-full bg-zinc-900/60 backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center">
+              <span className="text-zinc-200 font-medium tracking-wide text-sm drop-shadow-md">
+                @atvcomana
+              </span>
             </div>
 
            {/* SOCIAL NAVIGATION (Mari, compacte, dar rotite subtil - "aruncate") */}
