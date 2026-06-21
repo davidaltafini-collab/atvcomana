@@ -278,83 +278,50 @@ export default function App() {
           {/* MAIN INTERNAL SCREEN VIEWPORT (Scrollable) */}
           <div className="w-full h-full bg-[#000] overflow-y-auto overflow-x-hidden flex flex-col relative pb-24 scroll-smooth">
             
-            {/* HERO SECTION WITH IMPACT HEADINGS */}
-            <div className="relative w-full min-h-[320px] pt-24 pb-4 px-6 flex flex-col items-center justify-center overflow-hidden border-b border-zinc-900">
-              
-              {/* Radial background gradient matching Artistic Flair precisely */}
-              <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_center,_#D4FF00_0%,transparent_70%)] z-0"></div>
-              
-              {/* Visual grid overlay to represent extreme speed */}
-              <div className="absolute inset-0 opacity-5 bg-[linear-gradient(45deg,rgba(212,255,0,0.15)_25%,transparent_25%),linear-gradient(-45deg,rgba(212,255,0,0.15)_25%,transparent_25%)] bg-[size:10px_10px] z-0"></div>
-
-              {/* Sub-header Badge */}
-              <div className="z-10 inline-flex items-center gap-1 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full text-[10px] font-mono tracking-widest text-zinc-400 mb-2 uppercase select-none">
-                <Flame className="w-3 h-3 text-[#D4FF00]" /> 4X4 OFF-ROAD ADVENTURE
-              </div>
-
-              {/* HERO TITLE HIERARCHY: White bold ÎNCHIRIERE, massive Neon Yellow ATV, and medium white COMANA */}
-              <div className="z-10 flex flex-col items-center justify-center select-text cursor-default">
-                <span className="text-white text-xs font-black tracking-[0.3em] uppercase z-10 leading-none">
-                  ÎNCHIRIERE
-                </span>
-                <span className="text-[#D4FF00] text-8xl font-black italic -skew-x-12 leading-none z-10 drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] select-none">
-                  ATV
-                </span>
-                <span className="text-white text-2xl font-bold tracking-widest uppercase z-10 mt-[-10px]">
-                  COMANA
+            {/* FROSTED GLASS NAVBAR */}
+            <div className="sticky top-6 z-50 mx-5 px-5 py-3.5 rounded-2xl bg-zinc-900/60 backdrop-blur-md border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.5)] flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <Flame className="w-5 h-5 text-[#D4FF00]" />
+                <span className="text-white font-black italic tracking-wider text-lg uppercase drop-shadow-md">
+                  ATV <span className="text-[#D4FF00]">COMANA</span>
                 </span>
               </div>
-
-              {/* USP LIST CARD WITH MATCHING CHECKMARKS AND THEME STYLE */}
-              <div className="z-10 mt-4 flex flex-col gap-1.5 w-full">
-                <div className="flex items-center gap-2 text-[10px] text-white font-bold uppercase tracking-wider bg-white/5 py-1 px-3 rounded-full border border-white/10 justify-center">
-                  <span className="text-[#D4FF00]">✓</span> ATV-uri Puternice <span className="text-[#D4FF00] text-[9px] font-mono px-1 bg-[#D4FF00]/10 rounded ml-1">500cc-1000cc</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-[10px] text-white font-bold uppercase tracking-wider bg-white/5 py-1 px-3 rounded-full border border-white/10 justify-center">
-                  <span className="text-[#D4FF00]">✓</span> Echipament complet inclus <span className="text-zinc-500 font-normal">(Cască + vestă)</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-[10px] text-white font-bold uppercase tracking-wider bg-white/5 py-1 px-3 rounded-full border border-white/10 justify-center">
-                  <span className="text-[#D4FF00]">✓</span> Aventură ghidată în pădure
-                </div>
-              </div>
-
+              <div className="w-2.5 h-2.5 rounded-full bg-[#D4FF00] animate-pulse shadow-[0_0_10px_#D4FF00]"></div>
             </div>
 
-           {/* SOCIAL NAVIGATION (Aspect "aruncat", dezordonat, cu imaginile tale) */}
-            <div className="w-full flex flex-col items-center justify-center gap-10 py-12 overflow-visible border-b border-zinc-900/50 relative z-20 [-webkit-tap-highlight-color:transparent]">
+           {/* SOCIAL NAVIGATION (Mari, compacte, dar rotite subtil - "aruncate") */}
+            <div className="w-full flex flex-row flex-wrap items-center justify-center gap-6 py-10 pt-16 overflow-visible border-b border-zinc-900/50 relative z-20 px-4 [-webkit-tap-highlight-color:transparent]">
               
               {/* TikTok */}
-              <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer -ml-28 -rotate-12">
-                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative">
+              <a href="https://tiktok.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer -rotate-6 mt-3">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative border border-white/5">
                   <img src="/tiktok.png" alt="TikTok" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
                 </div>
-                <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">TikTok</span>
+                <span className="text-xs font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">TikTok</span>
               </a>
 
               {/* Instagram */}
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer ml-28 rotate-12">
-                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer rotate-3 -mt-3">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative border border-white/5">
                   <img src="/instagram.png" alt="Instagram" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
                 </div>
-                <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">Instagram</span>
+                <span className="text-xs font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">Instagram</span>
               </a>
 
               {/* WhatsApp */}
-              <a href="https://wa.me/40731441122" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer -ml-20 -rotate-6 mt-2">
-                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative">
+              <a href="https://wa.me/40731441122" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer -rotate-3 mt-4">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative border border-white/5">
                   <img src="/whatsap.png" alt="WhatsApp" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
                 </div>
-                <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">WhatsApp</span>
+                <span className="text-xs font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">WhatsApp</span>
               </a>
 
               {/* Waze */}
-              <a href="https://waze.com/ul?ll=44.170668,26.136867&navigate=yes" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer ml-24 rotate-6 mt-2">
-                <div className="w-16 h-16 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative">
+              <a href="https://waze.com/ul?ll=44.170668,26.136867&navigate=yes" target="_blank" rel="noreferrer" className="flex flex-col items-center gap-2 group outline-none focus:outline-none cursor-pointer rotate-6 -mt-2">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-[22%] overflow-hidden shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-all duration-300 group-active:scale-95 bg-black relative border border-white/5">
                   <img src="/waze.png" alt="Waze" className="w-full h-full object-cover outline-none border-none pointer-events-none" />
                 </div>
-                <span className="text-[11px] font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">Waze</span>
+                <span className="text-xs font-sans font-medium text-zinc-400 group-hover:text-white transition-colors">Waze</span>
               </a>
 
             </div>
