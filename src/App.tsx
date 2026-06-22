@@ -421,7 +421,7 @@ function MainPage() {
     } catch { /* Safari iOS doesn't support vibrate */ }
   };
 
-  const CalculatorForm = () => (
+  const renderCalculatorForm = () => (
     <div className="bg-zinc-950 border border-[#D4FF00]/20 rounded-2xl p-5 sm:p-6 shadow-xl relative w-full overflow-hidden">
       <div className="flex items-center gap-2 mb-5">
         <Sliders className="w-5 h-5 text-[#D4FF00]" />
@@ -436,7 +436,7 @@ function MainPage() {
           <select
             value={selectedAtv}
             onChange={(e) => { setSelectedAtv(e.target.value); haptic("medium"); }}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.02]"
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-base sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.02]"
           >
             {FLEET_DATA.map(atv => (
               <option key={atv.id} value={atv.id}>{atv.name} ({atv.pricePerHour} RON/h)</option>
@@ -487,7 +487,7 @@ function MainPage() {
               type="date"
               value={reservationDate}
               onChange={(e) => { setReservationDate(e.target.value); haptic("medium"); }}
-              className="w-full appearance-none h-[48px] bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-0 m-0 box-border text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark] transition-transform duration-150 active:scale-[1.02]"
+              className="w-full appearance-none h-[48px] bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-0 m-0 box-border text-base sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] font-space [color-scheme:dark] transition-transform duration-150 active:scale-[1.02]"
             />
           </div>
 
@@ -496,7 +496,7 @@ function MainPage() {
             <select
               value={reservationTime}
               onChange={(e) => { setReservationTime(e.target.value); haptic("medium"); }}
-              className="w-full appearance-none h-[48px] bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-0 m-0 box-border text-xs sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.02] [color-scheme:dark]"
+              className="w-full appearance-none h-[48px] bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-0 m-0 box-border text-base sm:text-sm text-white focus:outline-none focus:border-[#D4FF00] cursor-pointer transition-transform duration-150 active:scale-[1.02] [color-scheme:dark]"
             >
               <option value="09:00">09:00</option>
               <option value="11:00">11:00</option>
@@ -515,7 +515,7 @@ function MainPage() {
             placeholder="Ex: Andrei Popescu"
             value={reservationName}
             onChange={(e) => setReservationName(e.target.value)}
-            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-xs sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#D4FF00] font-mono"
+            className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 h-[48px] text-base sm:text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-[#D4FF00] font-mono"
           />
         </div>
 
@@ -773,7 +773,7 @@ function MainPage() {
 
           {/* 4. CALCULATOR (Apare aici doar pe Mobile, pentru flow perfect) */}
           <div className="block lg:hidden mt-2">
-            <CalculatorForm />
+            {renderCalculatorForm()}
           </div>
 
 {/* DESPRE NOI (GEO Content Block - Optimizat pentru AI & Search) */}
@@ -851,7 +851,7 @@ function MainPage() {
         {/* COLOANA DREAPTĂ (Calculatorul stă fixat aici pe Desktop) */}
         <div className="hidden lg:block w-[420px] xl:w-[480px] shrink-0">
           <div className="sticky top-24">
-            <CalculatorForm />
+            {renderCalculatorForm()}
           </div>
         </div>
 
