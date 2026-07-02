@@ -23,7 +23,7 @@ const SITE_CONFIG = {
   },
   social: {
     tiktok: "https://www.tiktok.com/@atv.comana",       // Link TikTok
-    instagram: "https://instagram.com/atvcomana",  // Link Instagram
+    instagram: "https://www.instagram.com/atv.comana",  // Link Instagram
   },
   location: {
     name: "Centru Comana, Giurgiu",
