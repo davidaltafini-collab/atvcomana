@@ -14,7 +14,7 @@ import {
 const SITE_CONFIG = {
   brand: {
     name: "ATV COMANA",
-    handle: "@atvcomana",
+    handle: "@atv.comana",
   },
   contact: {
     phoneDisplay: "0774 528 684",
